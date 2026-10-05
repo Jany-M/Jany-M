@@ -32,7 +32,7 @@ jobs:
 
       # pinned so the embedded fonts stay byte-identical between runs
       - name: Install dependencies
-        run: pip install fonttools==4.62.1 brotli==1.2.0
+        run: pip install -r tools/profile/requirements.txt
 
       - name: Fetch data
         env:
