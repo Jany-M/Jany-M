@@ -291,6 +291,21 @@ def build_card(p, side, delay, stars=None):
 
 # ─────────────────────────────── stats ────────────────────────────────
 AMBER, VIOLET = "#e3b341", "#bc8cff"
+LANG_POOL = [CYAN, MAGENTA, GREEN, VIOLET, "#2f81f7", AMBER, "#ff7b72", "#39c5cf", "#f778ba"]
+
+
+def lang_colors(n):
+    """n visually distinct colours: main, accent, then the pool, skipping anything too close in hue to a pick."""
+    import colorsys
+    def hue(c):
+        return colorsys.rgb_to_hls(*(int(c[i:i + 2], 16) / 255 for i in (1, 3, 5)))[0]
+    picked = []
+    for c in LANG_POOL:
+        if all(min(abs(hue(c) - hue(p)), 1 - abs(hue(c) - hue(p))) > 0.07 for p in picked):
+            picked.append(c)
+        if len(picked) == n:
+            break
+    return picked
 
 
 def fmt(n):
@@ -346,7 +361,7 @@ def build_stats(d):
     top = langs[:5]
     other = total - sum(v for _, v in top)
     items = [(k, v / total) for k, v in top] + ([("Other", other / total)] if other else [])
-    cols = [CYAN, MAGENTA, GREEN, AMBER, VIOLET, "#6e7681"]
+    cols = lang_colors(len(top)) + ["#6e7681"]   # one distinct colour per language, grey for Other
     bx, by, bw = lx + 16, ry + 42, lwid - 32
     segs, cx = [], bx
     for (k, p), c in zip(items, cols):
