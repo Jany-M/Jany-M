@@ -26,7 +26,12 @@ import urllib.request
 
 USER = "Jany-M"
 BLOG_API = "https://www.shambix.com/wp-json/wp/v2"
-DATA = pathlib.Path(__file__).resolve().parent / "data"
+HERE = pathlib.Path(__file__).resolve().parent
+REPO = HERE.parent.parent
+# PROFILE_ROOT redirects every read/write (README.md, assets/, data/) to another folder; the local preview
+# uses it so nothing in the real repo is touched. Unset (e.g. in the GitHub Action) = the repo itself.
+ROOT = pathlib.Path(os.environ["PROFILE_ROOT"]) if os.environ.get("PROFILE_ROOT") else REPO
+DATA = ROOT / "data" if os.environ.get("PROFILE_ROOT") else HERE / "data"
 UA = "Jany-M-profile-updater"
 
 
@@ -53,16 +58,22 @@ def graphql(token, query, variables=None):
     return res["data"]
 
 
+def _write(path, text):
+    """UTF-8 + LF on every OS (Windows would otherwise write cp1252 / CRLF and dirty the repo)."""
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+
 def load(name, default):
     try:
-        return json.loads((DATA / name).read_text())
+        return json.loads((DATA / name).read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError):
         return default
 
 
 def save(name, obj):
     DATA.mkdir(parents=True, exist_ok=True)
-    (DATA / name).write_text(json.dumps(obj, indent=2, ensure_ascii=False) + "\n")
+    _write(DATA / name, json.dumps(obj, indent=2, ensure_ascii=False) + "\n")
 
 
 def warn(msg):

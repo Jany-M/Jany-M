@@ -15,8 +15,11 @@ from fontTools.ttLib import TTFont
 from themes import THEMES, DEFAULT as DEFAULT_THEME, city_palette
 
 HERE = pathlib.Path(__file__).resolve().parent
-ROOT = HERE.parent.parent
-DATA = HERE / "data"
+REPO = HERE.parent.parent
+# PROFILE_ROOT redirects every read/write (README.md, assets/, data/) to another folder; the local preview
+# uses it so nothing in the real repo is touched. Unset (e.g. in the GitHub Action) = the repo itself.
+ROOT = pathlib.Path(os.environ["PROFILE_ROOT"]) if os.environ.get("PROFILE_ROOT") else REPO
+DATA = ROOT / "data" if os.environ.get("PROFILE_ROOT") else HERE / "data"
 OUT = ROOT / "assets"
 FONT_DIR = HERE / "fonts"
 GREEN = "#3fb950"
@@ -500,7 +503,7 @@ LINKS = [
     ("linkedin", "LinkedIn", "in/janymartelli", "https://www.linkedin.com/in/janymartelli"),
     ("shambix", "Shambix", "shambix.com", "https://www.shambix.com"),
 ]
-ICONS = json.load(open(HERE / "icons.json"))
+ICONS = json.load(open(HERE / "icons.json", encoding="utf-8"))
 SEG = W // 5     # 176 px per button slice
 BTN_W, BTN_GAP = 124, 39  # buttons line up with the text column (x = 52 … 828)
 
@@ -932,10 +935,16 @@ def build_city_concentric(calendar, repos, updated):
                      css=css, defs=defs, top=True, bottom=True)
 
 
+def _write(path, text):
+    """UTF-8 + LF on every OS (Windows would otherwise write cp1252 / CRLF and dirty the repo)."""
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+
 def write(rel, svg):
     path = OUT / rel
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(svg)
+    _write(path, svg)
 
 
 def main():
@@ -948,8 +957,8 @@ def main():
     ap.add_argument("--variants", action="store_true", help="also render the experimental city variations (preview only)")
     args = ap.parse_args()
     OUT = args.out
-    stats = json.load(open(args.data / "stats.json"))
-    articles = json.load(open(args.data / "articles.json"))
+    stats = json.load(open(args.data / "stats.json", encoding="utf-8"))
+    articles = json.load(open(args.data / "articles.json", encoding="utf-8"))
     stars = stats.get("repo_stars", {})
     write("header.svg", build_header())
     for k, (key, *_) in enumerate(LINKS):
@@ -957,15 +966,15 @@ def main():
     write("links/fill.svg", build_link_filler(len(LINKS)))
     write("stats.svg", build_stats(stats))
     if (args.data / "calendar.json").exists():
-        write("contribution-city.svg", build_city(json.load(open(args.data / "calendar.json")), stats["updated"]))
+        write("contribution-city.svg", build_city(json.load(open(args.data / "calendar.json", encoding="utf-8")), stats["updated"]))
     if args.variants and (args.data / "calendar.json").exists():
         repos = []
-        for f in (args.data / "repos.json", ROOT / "_dev" / "repos.demo.json"):   # demo file: local dev fallback only
-            if f.exists() and json.load(open(f)):
-                repos = json.load(open(f))
+        for f in (args.data / "repos.json", REPO / "_dev" / "repos.demo.json"):   # demo file: local dev fallback only
+            if f.exists() and json.load(open(f, encoding="utf-8")):
+                repos = json.load(open(f, encoding="utf-8"))
                 break
         write("contribution-city-concentric.svg",
-              build_city_concentric(json.load(open(args.data / "calendar.json")), repos, stats["updated"]))
+              build_city_concentric(json.load(open(args.data / "calendar.json", encoding="utf-8")), repos, stats["updated"]))
     write("projects.svg", build_projects_head())
     for i, p in enumerate(PROJECTS):
         write(f"card-{p['slug']}.svg", build_card(p, "L" if i % 2 == 0 else "R", 0.3 + i * 0.12, stars))

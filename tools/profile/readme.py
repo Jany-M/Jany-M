@@ -10,13 +10,24 @@ import datetime
 import hashlib
 import html
 import json
+import os
 import pathlib
 import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-README = HERE.parent.parent / "README.md"
-DATA = HERE / "data"
+REPO = HERE.parent.parent
+# PROFILE_ROOT redirects every read/write (README.md, assets/, data/) to another folder; the local preview
+# uses it so nothing in the real repo is touched. Unset (e.g. in the GitHub Action) = the repo itself.
+ROOT = pathlib.Path(os.environ["PROFILE_ROOT"]) if os.environ.get("PROFILE_ROOT") else REPO
+DATA = ROOT / "data" if os.environ.get("PROFILE_ROOT") else HERE / "data"
+README = ROOT / "README.md"
+
+
+def _write(path, text):
+    """UTF-8 + LF on every OS (Windows would otherwise write cp1252 / CRLF and dirty the repo)."""
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
 
 
 def writing_block(articles):
@@ -59,9 +70,9 @@ def city_alt(calendar):
 
 
 def main():
-    stats = json.loads((DATA / "stats.json").read_text())
-    articles = json.loads((DATA / "articles.json").read_text())
-    s = README.read_text()
+    stats = json.loads((DATA / "stats.json").read_text(encoding="utf-8"))
+    articles = json.loads((DATA / "articles.json").read_text(encoding="utf-8"))
+    s = README.read_text(encoding="utf-8")
 
     s, n = re.subn(r"<!-- writing:start -->.*?<!-- writing:end -->", lambda _: writing_block(articles), s, flags=re.S)
     if n != 1:
@@ -75,15 +86,15 @@ def main():
     cal_file = DATA / "calendar.json"
     if cal_file.exists():   # optional section: only touched when the README has the city image
         s = re.sub(r'(<img src="\./assets/contribution-city\.svg[^"]*"[^>]*?alt=")[^"]*(")',
-                   lambda mm: mm.group(1) + city_alt(json.loads(cal_file.read_text())) + mm.group(2), s)
+                   lambda mm: mm.group(1) + city_alt(json.loads(cal_file.read_text(encoding="utf-8"))) + mm.group(2), s)
 
     # cache-bust: GitHub's image proxy caches SVGs by URL, so tag each one with a hash of its content
     def bust(m):
-        h = hashlib.md5((HERE.parent.parent / m.group(1)).read_bytes()).hexdigest()[:8]
+        h = hashlib.md5((ROOT / m.group(1)).read_bytes()).hexdigest()[:8]
         return f'src="./{m.group(1)}?v={h}"'
     s = re.sub(r'src="\./(assets/[^"?]+\.svg)(?:\?v=\w+)?"', bust, s)
 
-    README.write_text(s)
+    _write(README, s)
     print("README updated")
 
 

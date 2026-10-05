@@ -1,25 +1,57 @@
-"""Builds preview.html: the README as it will look on GitHub, plus colour switchers.
-Local use only. Renders every theme from themes.py, so the presets are exact (city included);
-the two pickers re-colour the currently selected preset on top.
-Usage: python tools/profile/preview.py   (after fetch.py and readme.py)"""
-import json, os, pathlib, re, subprocess, sys, tempfile
+"""Local preview, completely separate from the repo.
+
+Everything is generated inside  _dev/preview/  (git-ignored): data, SVGs, a copy of README.md and
+preview.html. Nothing under tools/profile/data, assets/ or README.md is ever touched, so there is
+nothing to discard or accidentally commit.
+
+    python tools/profile/preview.py              refresh data (GitHub + blog), render, build preview.html
+    python tools/profile/preview.py --no-fetch   reuse the data already in _dev/preview/data
+
+Set PROFILE_TOKEN in your shell first to include private repos/contributions (not saved anywhere).
+Then open _dev/preview/preview.html. It shows the README as GitHub will, colour switchers, and the
+experimental city variations below it.
+"""
+import json, os, pathlib, re, shutil, subprocess, sys, tempfile
 
 HERE = pathlib.Path(__file__).resolve().parent
-ROOT = HERE.parent.parent
+REPO = HERE.parent.parent
+SAND = REPO / "_dev" / "preview"
 sys.path.insert(0, str(HERE))
 from themes import THEMES, DEFAULT
 
 # experimental city variations, shown below the real README (not part of it): (file, label)
 VARIANTS = [("assets/contribution-city-concentric.svg", "Variation 2: concentric city (newest day in the middle, one street + one car per repo)")]
 
-readme = (ROOT / "README.md").read_text()
+def _write(path, text):
+    """UTF-8 + LF on every OS (Windows would otherwise write cp1252 / CRLF and dirty the repo)."""
+    with open(path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(text)
+
+
+# ── sandbox: copy of the README template, data seeded from the repo only the first time
+(SAND / "data").mkdir(parents=True, exist_ok=True)
+(SAND / "assets").mkdir(parents=True, exist_ok=True)
+_write(SAND / "README.md", (REPO / "README.md").read_text(encoding="utf-8").replace("\r\n", "\n"))        # fresh template every run
+for f in (HERE / "data").glob("*.json"):
+    if not (SAND / "data" / f.name).exists():
+        shutil.copyfile(f, SAND / "data" / f.name)
+env = dict(os.environ, PROFILE_ROOT=str(SAND))
+
+def run(script, *args, **kw):
+    subprocess.run([sys.executable, str(HERE / script), *args], check=True, env=env, **kw)
+
+if "--no-fetch" not in sys.argv:
+    run("fetch.py")
+run("render.py", "--variants")          # default theme -> _dev/preview/assets
+run("readme.py")                        # updates _dev/preview/README.md only
+
+readme = (SAND / "README.md").read_text(encoding="utf-8")
 rels = re.findall(r'src="\./([^"?]+\.svg)(?:\?v=\w+)?"', readme) + [v[0] for v in VARIANTS]
 sets = {}
 for name in THEMES:
     out = pathlib.Path(tempfile.mkdtemp(prefix=f"prof-{name}-"))
-    subprocess.run([sys.executable, str(HERE / "render.py"), "--theme", name, "--out", str(out), "--variants"],
-                   check=True, stdout=subprocess.DEVNULL)
-    sets[name] = {r: (out / pathlib.Path(r).relative_to("assets")).read_text() for r in rels}
+    run("render.py", "--theme", name, "--out", str(out), "--variants", stdout=subprocess.DEVNULL)
+    sets[name] = {r: (out / pathlib.Path(r).relative_to("assets")).read_text(encoding="utf-8") for r in rels}
 body = re.sub(r'src="\./([^"?]+\.svg)(?:\?v=\w+)?"', lambda m: f'src="" data-svg="{m.group(1)}"', readme)
 extra = "".join(f'<h3 style="max-width:880px;margin:32px auto 8px;font:600 14px system-ui">{label}</h3>'
                 f'<div style="max-width:880px;margin:0 auto 24px"><img data-svg="{rel}" width="100%" alt=""></div>'
@@ -69,5 +101,5 @@ mainI.oninput = accI.oninput = apply;
 document.getElementById("reset").onclick = () => pick(DEFAULT);
 pick(DEFAULT);
 </script>"""
-(ROOT / "preview.html").write_text(page)
-print("preview.html written,", len(page) // 1024, "KB; themes:", ", ".join(THEMES))
+_write(SAND / "preview.html", page)
+print("preview written to", SAND / "preview.html", f"({len(page) // 1024} KB)")
