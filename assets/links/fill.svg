@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="528" height="80" viewBox="0 0 528 80" role="img" aria-hidden="true">
+<defs>
+<pattern id="grid" x="8" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#ff4d6d" stroke-opacity=".06"/></pattern>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<path d="M512 -40V120" fill="none" stroke="#ff4d6d" stroke-width="3" opacity=".55" filter="url(#glow)"/>
+<rect x="0" y="0" width="512" height="80" fill="#03040a"/>
+<rect x="0" y="0" width="512" height="80" fill="url(#grid)"/>
+<path d="M512 0V80" fill="none" stroke="#ff4d6d" stroke-width="1.2"/>
+</svg>

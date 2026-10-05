@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="400" viewBox="0 0 880 400" role="img" aria-labelledby="t d">
+<title id="t">Tech stack</title>
+<desc id="d">Tech stack. languages: TypeScript, JavaScript, Python, Dart, PHP, Java, PowerShell. platforms: React, Node.js, Next.js, FastAPI, Flutter, Electron. also: Android, Express, Expo, DevOps, Render, Vercel. data: MongoDB, MySQL, Redis, GraphQL. ai: Local LLMs, MCP, RAG, Agents, PyTorch, OpenCV. infra: AWS, Linux, Docker, Cloudflare, Netlify, GitHub Actions.</desc>
+<style>
+@font-face{font-family:'JBM';font-weight:400;src:url(data:font/woff2;base64,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) format('woff2')}@font-face{font-family:'JBM';font-weight:700;src:url(data:font/woff2;base64,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) format('woff2')}
+text{font-family:'JBM',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:15px}
+.dim{fill:#8b949e}.cy{fill:#ff4d6d}.fg{fill:#c9d1d9}.gr{fill:#3fb950}.wh{fill:#f0fbff}
+@keyframes fadein{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.ln{animation:fadein .35s ease-out both}
+.cursor{animation:blink 1.05s step-end infinite}
+.dot{animation:pulse 2s ease-in-out infinite}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#ff4d6d" stroke-opacity=".06"/></pattern>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="g" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
+
+</defs>
+<path d="M16 -40V440M864 -40V440" fill="none" stroke="#ff4d6d" stroke-width="3" opacity=".55" filter="url(#glow)"/>
+<rect x="16" y="0" width="848" height="400" fill="#03040a"/>
+<rect x="16" y="0" width="848" height="400" fill="url(#grid)"/>
+<text x="52" y="44" font-weight="700" fill="#ff4d6d" filter="url(#g)" opacity=".8" style="font-size:20px">~/</text>
+<text x="52" y="44" font-weight="700" style="font-size:20px"><tspan class="cy">~/</tspan><tspan class="wh">stack</tspan></text>
+<text x="828" y="44" text-anchor="end" letter-spacing="2" fill="#6e7681" style="font-size:12px">// 05</text>
+<line x1="52" y1="58" x2="828" y2="58" stroke="#ff4d6d" stroke-opacity=".4"/>
+<line x1="52" y1="58" x2="172" y2="58" stroke="#ff4d6d" stroke-width="2"/>
+<line x1="52" y1="58" x2="172" y2="58" stroke="#ff4d6d" stroke-width="3" filter="url(#g)"/>
+<g class="ln" style="animation-delay:.15s"><text x="52" y="96" class="dim"><tspan class="gr">$</tspan> scan --loadout --top-level</text></g>
+<g class="ln" style="animation-delay:0.25s">
+<text x="52" y="146" class="dim" style="font-size:13px">languages</text>
+<text x="156" y="146" class="cy" style="font-size:13px">›</text>
+<rect x="176.0" y="126" width="104.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M176.0 134V126H184.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="189.0" y="146" font-weight="700" class="cy" style="font-size:13px">TypeScript</text>
+<rect x="290.0" y="126" width="104.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M290.0 134V126H298.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="303.0" y="146" font-weight="700" class="cy" style="font-size:13px">JavaScript</text>
+<rect x="404.0" y="126" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M404.0 134V126H412.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="417.0" y="146" font-weight="700" class="cy" style="font-size:13px">Python</text>
+<rect x="486.8" y="126" width="57.2" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M486.8 134V126H494.8" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="499.8" y="146" font-weight="700" class="cy" style="font-size:13px">Dart</text>
+<rect x="554.0" y="126" width="49.4" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M554.0 134V126H562.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="567.0" y="146" font-weight="700" class="cy" style="font-size:13px">PHP</text>
+<rect x="613.4" y="126" width="57.2" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M613.4 134V126H621.4" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="626.4" y="146" font-weight="700" class="cy" style="font-size:13px">Java</text>
+<rect x="680.6" y="126" width="104.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M680.6 134V126H688.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="693.6" y="146" font-weight="700" class="cy" style="font-size:13px">PowerShell</text>
+</g>
+<g class="ln" style="animation-delay:0.35s">
+<text x="52" y="190" class="dim" style="font-size:13px">platforms</text>
+<text x="156" y="190" class="cy" style="font-size:13px">›</text>
+<rect x="176.0" y="170" width="65.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M176.0 178V170H184.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="189.0" y="190" font-weight="700" class="cy" style="font-size:13px">React</text>
+<rect x="251.0" y="170" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M251.0 178V170H259.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="264.0" y="190" font-weight="700" class="cy" style="font-size:13px">Node.js</text>
+<rect x="341.6" y="170" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M341.6 178V170H349.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="354.6" y="190" font-weight="700" class="cy" style="font-size:13px">Next.js</text>
+<rect x="432.2" y="170" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M432.2 178V170H440.2" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="445.2" y="190" font-weight="700" class="cy" style="font-size:13px">FastAPI</text>
+<rect x="522.8" y="170" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M522.8 178V170H530.8" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="535.8" y="190" font-weight="700" class="cy" style="font-size:13px">Flutter</text>
+<rect x="613.4" y="170" width="88.4" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M613.4 178V170H621.4" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="626.4" y="190" font-weight="700" class="cy" style="font-size:13px">Electron</text>
+</g>
+<g class="ln" style="animation-delay:0.45s">
+<text x="52" y="234" class="dim" style="font-size:13px">also</text>
+<text x="156" y="234" class="cy" style="font-size:13px">›</text>
+<rect x="176.0" y="214" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M176.0 222V214H184.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="189.0" y="234" font-weight="700" class="cy" style="font-size:13px">Android</text>
+<rect x="266.6" y="214" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M266.6 222V214H274.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="279.6" y="234" font-weight="700" class="cy" style="font-size:13px">Express</text>
+<rect x="357.2" y="214" width="57.2" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M357.2 222V214H365.2" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="370.2" y="234" font-weight="700" class="cy" style="font-size:13px">Expo</text>
+<rect x="424.4" y="214" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M424.4 222V214H432.4" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="437.4" y="234" font-weight="700" class="cy" style="font-size:13px">DevOps</text>
+<rect x="507.2" y="214" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M507.2 222V214H515.2" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="520.2" y="234" font-weight="700" class="cy" style="font-size:13px">Render</text>
+<rect x="590.0" y="214" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M590.0 222V214H598.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="603.0" y="234" font-weight="700" class="cy" style="font-size:13px">Vercel</text>
+</g>
+<g class="ln" style="animation-delay:0.55s">
+<text x="52" y="278" class="dim" style="font-size:13px">data</text>
+<text x="156" y="278" class="cy" style="font-size:13px">›</text>
+<rect x="176.0" y="258" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M176.0 266V258H184.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="189.0" y="278" font-weight="700" class="cy" style="font-size:13px">MongoDB</text>
+<rect x="266.6" y="258" width="65.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M266.6 266V258H274.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="279.6" y="278" font-weight="700" class="cy" style="font-size:13px">MySQL</text>
+<rect x="341.6" y="258" width="65.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M341.6 266V258H349.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="354.6" y="278" font-weight="700" class="cy" style="font-size:13px">Redis</text>
+<rect x="416.6" y="258" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M416.6 266V258H424.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="429.6" y="278" font-weight="700" class="cy" style="font-size:13px">GraphQL</text>
+</g>
+<g class="ln" style="animation-delay:0.65s">
+<text x="52" y="322" class="dim" style="font-size:13px">ai</text>
+<text x="156" y="322" class="cy" style="font-size:13px">›</text>
+<rect x="176.0" y="302" width="104.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M176.0 310V302H184.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="189.0" y="322" font-weight="700" class="cy" style="font-size:13px">Local LLMs</text>
+<rect x="290.0" y="302" width="49.4" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M290.0 310V302H298.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="303.0" y="322" font-weight="700" class="cy" style="font-size:13px">MCP</text>
+<rect x="349.4" y="302" width="49.4" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M349.4 310V302H357.4" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="362.4" y="322" font-weight="700" class="cy" style="font-size:13px">RAG</text>
+<rect x="408.8" y="302" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M408.8 310V302H416.8" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="421.8" y="322" font-weight="700" class="cy" style="font-size:13px">Agents</text>
+<rect x="491.6" y="302" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M491.6 310V302H499.6" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="504.6" y="322" font-weight="700" class="cy" style="font-size:13px">PyTorch</text>
+<rect x="582.2" y="302" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M582.2 310V302H590.2" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="595.2" y="322" font-weight="700" class="cy" style="font-size:13px">OpenCV</text>
+</g>
+<g class="ln" style="animation-delay:0.75s">
+<text x="52" y="366" class="dim" style="font-size:13px">infra</text>
+<text x="156" y="366" class="cy" style="font-size:13px">›</text>
+<rect x="176.0" y="346" width="49.4" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M176.0 354V346H184.0" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="189.0" y="366" font-weight="700" class="cy" style="font-size:13px">AWS</text>
+<rect x="235.4" y="346" width="65.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M235.4 354V346H243.4" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="248.4" y="366" font-weight="700" class="cy" style="font-size:13px">Linux</text>
+<rect x="310.4" y="346" width="72.8" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M310.4 354V346H318.4" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="323.4" y="366" font-weight="700" class="cy" style="font-size:13px">Docker</text>
+<rect x="393.2" y="346" width="104.0" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M393.2 354V346H401.2" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="406.2" y="366" font-weight="700" class="cy" style="font-size:13px">Cloudflare</text>
+<rect x="507.2" y="346" width="80.6" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M507.2 354V346H515.2" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="520.2" y="366" font-weight="700" class="cy" style="font-size:13px">Netlify</text>
+<rect x="597.8" y="346" width="135.2" height="30" fill="#ff4d6d" fill-opacity=".06" stroke="#ff4d6d" stroke-opacity=".55"/>
+<path d="M597.8 354V346H605.8" fill="none" stroke="#ff4d6d" stroke-width="2"/>
+<text x="610.8" y="366" font-weight="700" class="cy" style="font-size:13px">GitHub Actions</text>
+</g>
+<path d="M16 0V400M864 0V400" fill="none" stroke="#ff4d6d" stroke-width="1.2"/>
+<g fill="none" stroke="#ff4d6d" stroke-width="2"></g>
+</svg>

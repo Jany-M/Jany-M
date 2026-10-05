@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+_to_delete/
+preview.html
+_dev/
