@@ -18,4 +18,4 @@
 <a href="https://www.shambix.com/blog/"><img src="./assets/writing/all-articles.svg?v=12123ca4" width="100%" align="top" alt="Read all articles on the Shambix blog"></a>
 <img src="./assets/footer.svg?v=a4783d6c" width="100%" align="top" alt="Connection closed.">
 </p>
-<p align="right"><a href="https://dev.to/georgekobaidze/i-turned-my-github-profile-into-a-cyberpunk-console-with-a-city-built-from-my-contributions-h4c"><img src="./assets/credits.svg?v=806d2e43" width="100%" align="top" alt="Inspiration: the original cyberpunk profile console by Giorgi Kobaidze"></a></p>
+<p align="right"><a href="https://dev.to/georgekobaidze/i-turned-my-github-profile-into-a-cyberpunk-console-with-a-city-built-from-my-contributions-h4c"><img src="./assets/credits.svg?v=928f6456" width="100%" align="top" alt="Inspiration: the original cyberpunk profile console by Giorgi Kobaidze"></a></p>
