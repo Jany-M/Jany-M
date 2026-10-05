@@ -205,12 +205,14 @@ def build_footer():
 
 
 def build_credits():
-    """Tiny transparent strip under the footer: right-aligned 'credits' in the theme's main colour and the same font."""
+    """Tiny transparent strip under the footer: right-aligned 'inspiration ->' link in the theme's main colour and the same font."""
     h = 32
-    text = "credits"
-    body = f'<text x="{FR}" y="20" text-anchor="end" class="cy" style="font-size:12px">credits</text>'
+    text = "inspiration"
+    body = (f'<text x="{FR-30}" y="20" text-anchor="end" class="cy" style="font-size:12px">inspiration</text>'
+            f'<path d="M{FR-24},16H{FR-4}M{FR-10},11L{FR-3},16L{FR-10},21" transform="translate(0,-.5)" fill="none" stroke="{CYAN}" '
+            f'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>')
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{h}" viewBox="0 0 {W} {h}" role="img" aria-labelledby="t d">
-<title id="t">Credits</title>
+<title id="t">Inspiration</title>
 <desc id="d">Credits to Giorgi Kobaidze, who made the original cyberpunk profile console.</desc>
 <style>
 {faces(text, (400, 700))}
