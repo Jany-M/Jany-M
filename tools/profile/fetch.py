@@ -215,6 +215,49 @@ def fetch_github_public(today):
                     repos=repos, days=days, commits_all=0)
 
 
+# ───────────────────── repos contributed to (last 365 days) ─────────────────────
+REPOS_QUERY = """
+query($login: String!, $from: DateTime!, $to: DateTime!) {
+  user(login: $login) {
+    contributionsCollection(from: $from, to: $to) {
+      commits: commitContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner isPrivate } contributions { totalCount } }
+      prs: pullRequestContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner isPrivate } contributions { totalCount } }
+      issues: issueContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner isPrivate } contributions { totalCount } }
+      reviews: pullRequestReviewContributionsByRepository(maxRepositories: 100) { repository { nameWithOwner isPrivate } contributions { totalCount } }
+    }
+  }
+}"""
+
+
+def fetch_repos(token, today):
+    """[{name, private, count}] for every repo contributed to in the last year. Private repo names are
+    never stored (this file is committed to a public repo): they appear as name=None."""
+    frm = (today - datetime.timedelta(days=364)).isoformat() + "T00:00:00Z"
+    to = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    cc = graphql(token, REPOS_QUERY, {"login": USER, "from": frm, "to": to})["user"]["contributionsCollection"]
+    merged = {}
+    for key in ("commits", "prs", "issues", "reviews"):
+        for e in cc[key]:
+            r = e["repository"]
+            m = merged.setdefault(r["nameWithOwner"], {"name": None if r["isPrivate"] else r["nameWithOwner"],
+                                                       "private": r["isPrivate"], "count": 0})
+            m["count"] += e["contributions"]["totalCount"]
+    return sorted(merged.values(), key=lambda r: -r["count"])
+
+
+def fetch_repos_public():
+    """No token: repos from your public events (GitHub only keeps the last ~90 days)."""
+    counts = {}
+    for page in (1, 2, 3):
+        try:
+            evs = http_json(f"https://api.github.com/users/{USER}/events/public?per_page=100&page={page}")
+        except Exception:  # noqa: BLE001
+            break
+        for ev in evs:
+            counts[ev["repo"]["name"]] = counts.get(ev["repo"]["name"], 0) + 1
+    return sorted(({"name": k, "private": False, "count": v} for k, v in counts.items()), key=lambda r: -r["count"])
+
+
 # ─────────────────────────────── Shambix blog ──────────────────────────
 def fetch_blog(limit=5):
     cats = {c["id"]: html.unescape(c["name"]) for c in
@@ -245,6 +288,12 @@ def main():
                                else "(public token)" if token else "(public preview, no token)"))
     except Exception as ex:  # noqa: BLE001
         warn(f"GitHub fetch failed, keeping previous stats: {ex}")
+
+    try:
+        save("repos.json", fetch_repos(token, today) if token else fetch_repos_public())
+        print("repos: ok")
+    except Exception as ex:  # noqa: BLE001
+        warn(f"Repo list unavailable, keeping previous: {ex}")
 
     try:
         latest = fetch_blog()

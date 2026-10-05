@@ -9,15 +9,21 @@ ROOT = HERE.parent.parent
 sys.path.insert(0, str(HERE))
 from themes import THEMES, DEFAULT
 
+# experimental city variations, shown below the real README (not part of it): (file, label)
+VARIANTS = [("assets/contribution-city-concentric.svg", "Variation 2: concentric city (newest day in the middle, one street + one car per repo)")]
+
 readme = (ROOT / "README.md").read_text()
-rels = re.findall(r'src="\./([^"]+\.svg)"', readme)
+rels = re.findall(r'src="\./([^"?]+\.svg)(?:\?v=\w+)?"', readme) + [v[0] for v in VARIANTS]
 sets = {}
 for name in THEMES:
     out = pathlib.Path(tempfile.mkdtemp(prefix=f"prof-{name}-"))
-    subprocess.run([sys.executable, str(HERE / "render.py"), "--theme", name, "--out", str(out)],
+    subprocess.run([sys.executable, str(HERE / "render.py"), "--theme", name, "--out", str(out), "--variants"],
                    check=True, stdout=subprocess.DEVNULL)
     sets[name] = {r: (out / pathlib.Path(r).relative_to("assets")).read_text() for r in rels}
-body = re.sub(r'src="\./([^"]+\.svg)"', lambda m: f'src="" data-svg="{m.group(1)}"', readme)
+body = re.sub(r'src="\./([^"?]+\.svg)(?:\?v=\w+)?"', lambda m: f'src="" data-svg="{m.group(1)}"', readme)
+extra = "".join(f'<h3 style="max-width:880px;margin:32px auto 8px;font:600 14px system-ui">{label}</h3>'
+                f'<div style="max-width:880px;margin:0 auto 24px"><img data-svg="{rel}" width="100%" alt=""></div>'
+                for rel, label in VARIANTS)
 page = """<!doctype html><meta charset="utf-8"><title>Jany-M profile preview</title>
 <style>
 body{background:#0d1117;margin:0;font-family:system-ui,sans-serif;color:#c9d1d9}
@@ -36,6 +42,7 @@ button{background:#21262d;color:#c9d1d9;border:1px solid #30363d;border-radius:6
  <span style="opacity:.6">preview only: nothing here changes the real files</span>
 </div>
 <div id="wrap">""" + body + """</div>
+""" + extra + """
 <script>
 const SETS = """ + json.dumps(sets) + """, THEMES = """ + json.dumps(THEMES) + """, DEFAULT = """ + json.dumps(DEFAULT) + """;
 let cur = DEFAULT;
