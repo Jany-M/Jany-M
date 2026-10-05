@@ -204,6 +204,23 @@ def build_footer():
 
 
 
+def build_credits():
+    """Tiny transparent strip under the footer: right-aligned 'credits' in the theme's main colour and the same font."""
+    h = 32
+    text = "credits"
+    body = f'<text x="{FR}" y="20" text-anchor="end" class="cy" style="font-size:12px">credits</text>'
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{h}" viewBox="0 0 {W} {h}" role="img" aria-labelledby="t d">
+<title id="t">Credits</title>
+<desc id="d">Credits to Giorgi Kobaidze, who made the original cyberpunk profile console.</desc>
+<style>
+{faces(text, (400, 700))}
+{BASE_CSS}
+</style>
+{body}
+</svg>
+'''
+
+
 # ────────────────────────────── projects ──────────────────────────────
 HW = W // 2   # half-slice width (440, a multiple of 40 so the grid stays aligned)
 
@@ -712,74 +729,92 @@ def build_city(calendar, updated):
                      css=css, defs=defs)
 
 
-# ──────────────────── contribution city, variation 2: concentric ────────────────────
-MAX_STREETS = 12
+# ──────────────────── contribution city, model 2: roads around blocks ────────────────────
+# Which contribution city goes into the README:  1 = original horizontal skyline strip,  2 = block city
+# (roads around random-sized blocks, cars, lamps, trees).  Override with the CITY_MODEL env var.
+CITY_MODEL = int(os.environ.get("CITY_MODEL", "2"))
+MAX_STREETS = None                   # max repos (= cars) drawn; None = every repo with activity in the last year
+BLOCK_MIN, BLOCK_MAX = 2, 5          # a block of buildings is between MIN and MAX buildings per side
+BLOCK_SPLIT = 0.35                   # chance to split a region that already fits, so block sizes vary
 CAR_COLORS = [CYAN, MAGENTA, "#3fb950", "#bc8cff", "#2f81f7", "#e3b341", "#ff7b72", "#39c5cf", "#f778ba", "#9be9a8", "#ffa657", "#79c0ff"]
 
 
+def _city_blocks(side, rr):
+    """Binary space partition of a side x side map: roads are the cut lines (plus the outer ring),
+    the leaves are blocks of buildings between BLOCK_MIN and BLOCK_MAX cells per side.
+    Returns (blocks [(x, y, w, h)], road_lines [(x1, y1, x2, y2)] in cell coordinates)."""
+    blocks, lines = [], []
+    lines += [(0, 0, side - 1, 0), (side - 1, 0, side - 1, side - 1), (side - 1, side - 1, 0, side - 1), (0, side - 1, 0, 0)]
+
+    def split(x, y, w, h):
+        can_x, can_y = w >= 2 * BLOCK_MIN + 1, h >= 2 * BLOCK_MIN + 1
+        must_x, must_y = w > BLOCK_MAX, h > BLOCK_MAX
+        if not (must_x or must_y) and not ((can_x or can_y) and rr.random() < BLOCK_SPLIT):
+            blocks.append((x, y, w, h))
+            return
+        if must_x and must_y:
+            axis = "x" if w >= h else "y"
+        elif must_x:
+            axis = "x"
+        elif must_y:
+            axis = "y"
+        else:
+            axis = rr.choice([a for a, ok in (("x", can_x), ("y", can_y)) if ok])
+        if axis == "x":
+            c = rr.randint(BLOCK_MIN, w - 1 - BLOCK_MIN)
+            lines.append((x + c, y - 1, x + c, y + h))
+            split(x, y, c, h)
+            split(x + c + 1, y, w - 1 - c, h)
+        else:
+            c = rr.randint(BLOCK_MIN, h - 1 - BLOCK_MIN)
+            lines.append((x - 1, y + c, x + w, y + c))
+            split(x, y, w, c)
+            split(x, y + c + 1, w, h - 1 - c)
+
+    split(1, 1, side - 2, side - 2)
+    return blocks, lines
+
+
 def build_city_concentric(calendar, repos, updated):
-    """Newest day in the middle, older days spiralling outward (same building logic as the strip).
-    One ring road per repo contributed to (random radii, the outermost one wraps the city),
-    street lamps along the roads and one car with headlights per repo driving its road."""
+    """Small isometric night city: newest day's building near the middle, older days further out (same
+    height/colour/window logic as the strip), buildings grouped in random-sized blocks with roads all around
+    them, street lamps along the roads, and one car with headlights per repo driving round its own block."""
     import random
     days = sorted(((datetime.date.fromisoformat(d), n) for d, n in calendar), key=lambda t: t[0], reverse=True)
     counts = [n for _, n in days]
     total, peak = sum(counts), max(counts) if counts else 0
     lv = _levels(counts)
-    rnd = _rng(f"concentric-{updated}-{total}")
-    rr = random.Random(f"streets-{updated}-{total}")
-
-    repos = sorted(repos, key=lambda r: -r["count"])[:MAX_STREETS]
+    rnd = _rng(f"city-{updated}-{total}")
+    repos = sorted((r for r in repos if r["count"] > 0), key=lambda r: -r["count"])[:MAX_STREETS]
     N = len(repos)
 
-    # ── ring layout: radius r (Chebyshev distance from the centre) is either a block of buildings or a street
-    r0 = 0
-    while (2 * r0 + 1) ** 2 < len(days):
-        r0 += 1
-    wraps = max(1, N // 4) if N else 0              # roads that wrap around the finished city
-    inner_n = N - wraps
-    pool = list(range(1, r0 + inner_n + 1))
-    street_r = set()
-    while len(street_r) < inner_n and pool:         # inner roads: random radii, kept apart where possible
-        c = rr.choice(pool)
-        street_r.add(c)
-        pool = [p for p in pool if abs(p - c) > 1]
-    if len(street_r) < inner_n:
-        rest = [p for p in range(1, r0 + inner_n + 1) if p not in street_r]
-        street_r |= set(rr.sample(rest, min(inner_n - len(street_r), len(rest))))
-    assigned, idx, lastb = {}, 0, 0                 # (gx, gy) -> day index
-    plot_extra = []                                 # unfilled tiles of the last (partial) ring: empty plots
-    r = 0
-    while idx < len(days):
-        if r in street_r:
-            r += 1
-            continue
-        ring = [(0, 0)] if r == 0 else (
-            [(x, -r) for x in range(-r, r)] + [(r, y) for y in range(-r, r)] +
-            [(x, r) for x in range(r, -r, -1)] + [(-r, y) for y in range(r, -r, -1)])
-        for t in ring:
-            if idx < len(days):
-                assigned[t] = idx
-                idx += 1
-            else:
-                plot_extra.append(t)
-        lastb = r
-        r += 1
-    w = lastb + 1                                   # wrap roads go just outside the last building ring
-    while len(street_r) < N:
-        if w not in street_r:
-            street_r.add(w)
-        w += 2
-    R = max(max(street_r, default=0), lastb)
-    side = 2 * R + 1
+    # ── layout: grow the map until the blocks hold every day
+    side = 19
+    while True:
+        rr = random.Random(f"blocks-{updated}-{total}-{side}")
+        blocks, road_lines = _city_blocks(side, rr)
+        if (sum(w * h for _, _, w, h in blocks) >= len(days) and len(blocks) >= N) or side > 61:
+            break
+        side += 2
+    c0 = (side - 1) / 2
+    cells = [(x, y) for bx, by, bw, bh in blocks for x in range(bx, bx + bw) for y in range(by, by + bh)]
+    cells.sort(key=lambda t: ((t[0] - c0) ** 2 + (t[1] - c0) ** 2 + rr.random() * .6, t))   # nearest to the middle first
+    assigned = {(x - c0, y - c0): i for i, (x, y) in enumerate(cells[:len(days)])}
+    plot_extra = [(x - c0, y - c0) for x, y in cells[len(days):]]       # leftover lots stay empty
+    R = c0
     TW = min(22.0, 800.0 / side)
     TH = TW / 2
     s = TW / 25
-    HMAX = TW * 3.6
+    HMAX = TW * 2.5
     OX = W / 2
-    top_pad = 138 + max(0, HMAX - (R - lastb) * TH)
-    OY = top_pad + (R + .5) * TH
-    h = up40(OY + (R + .5) * TH + 74 + M)
+
+    # ── vertical placement: highest point of the picture sits just under the heading
+    def hgt(n):
+        return 6 + (HMAX - 6) * math.sqrt(n / peak)
+    tops = [(gx + gy) * TH / 2 - TH / 2 - hgt(days[di][1]) for (gx, gy), di in assigned.items() if days[di][1]]
+    ymin_rel = min(tops + [-(R + .5) * TH])
+    OY = 156 - ymin_rel
+    h = up40(OY + (R + .5) * TH + 46 + M)
 
     def P(gx, gy):
         return OX + (gx - gy) * TW / 2, OY + (gx + gy) * TH / 2
@@ -788,33 +823,31 @@ def build_city_concentric(calendar, repos, updated):
         x, y = P(gx, gy)
         return f"{x:.1f},{y:.1f}"
 
-    def diamond(rad):                               # square ring outline at radius `rad` (grid units)
-        return "M" + "L".join(pt(a, b) for a, b in ((-rad, -rad), (rad, -rad), (rad, rad), (-rad, rad))) + "Z"
-
-    # ── ground, streets
-    ground = f'<path d="{diamond(R + .5)}" fill="#070b13" stroke="{CYAN}" stroke-opacity=".35"/>'
-    roads = "".join(f'<path d="{diamond(sr + .5)}{diamond(sr - .5)}" fill-rule="evenodd" fill="#101624"/>' for sr in sorted(street_r))
-    road_edges = "".join(f'<path d="{diamond(sr + .5)}{diamond(sr - .5)}" fill="none" stroke="{CYAN}" stroke-opacity=".18" stroke-width=".6"/>'
-                         for sr in sorted(street_r))
-    centre_lines = (f'<path d="{"".join(diamond(sr) for sr in sorted(street_r))}" fill="none" stroke="{MAGENTA}" stroke-opacity=".45" '
-                    f'stroke-width=".8" stroke-dasharray="{3*s+1:.1f} {3*s+1:.1f}"/>') if street_r else ""
-
     def tile(gx, gy):
         c = P(gx, gy)
         return f"M{c[0]:.1f},{c[1]-TH/2:.1f}L{c[0]+TW/2:.1f},{c[1]:.1f}L{c[0]:.1f},{c[1]+TH/2:.1f}L{c[0]-TW/2:.1f},{c[1]:.1f}Z"
-    plots = f'<path d="{"".join(tile(*t) for t in list(assigned) + plot_extra)}" fill="#161b22" stroke="#0d1117" stroke-width=".5"/>'
+
+    ground = (f'<path d="M{pt(-R-.5,-R-.5)}L{pt(R+.5,-R-.5)}L{pt(R+.5,R+.5)}L{pt(-R-.5,R+.5)}Z" fill="#252e42" '
+              f'stroke="{CYAN}" stroke-opacity=".35"/>')
+    centre = "".join(f"M{pt(x1-c0, y1-c0)}L{pt(x2-c0, y2-c0)}" for x1, y1, x2, y2 in road_lines)
+    centre_lines = (f'<path d="{centre}" fill="none" stroke="{MAGENTA}" stroke-opacity=".6" stroke-width="1" '
+                    f'stroke-dasharray="{3*s+1:.1f} {3*s+1:.1f}"/>')
+    plots = (f'<path d="{"".join(tile(*t) for t in list(assigned) + plot_extra)}" fill="#141a26" stroke="#2c374d" stroke-width=".8"/>')
 
     # ── buildings + lamps, painter's order by depth
     items = []   # (depth, tie, svg)
+    empties = []
     for (gx, gy), di in assigned.items():
         d, n = days[di]
         if n == 0:
+            empties.append((gx, gy))
             continue
         cx, cy = P(gx, gy)
-        hh = 6 + (HMAX - 6) * math.sqrt(n / peak)
+        hh = hgt(n)
         level = sum(n > t for t in lv)
-        L, Rt = (cx - TW / 2, cy), (cx + TW / 2, cy)
-        T, B = (cx, cy - TH / 2), (cx, cy + TH / 2)
+        FW, FH = TW * .8 / 2, TH * .8 / 2             # footprint a bit smaller than the lot: kerb stays visible
+        L, Rt = (cx - FW, cy), (cx + FW, cy)
+        T, B = (cx, cy - FH), (cx, cy + FH)
         Tu, Ru, Bu, Lu = [(x, y - hh) for x, y in (T, Rt, B, L)]
         out = [f'<path d="M{_p(*L)}L{_p(*B)}L{_p(*Bu)}L{_p(*Lu)}Z" fill="{CITY["wall_l"]}"/>'
                f'<path d="M{_p(*B)}L{_p(*Rt)}L{_p(*Ru)}L{_p(*Bu)}Z" fill="{CITY["wall_r"]}"/>'
@@ -839,18 +872,46 @@ def build_city_concentric(calendar, repos, updated):
             out.append(f'<path d="{"".join(side_on)}" fill="{WIN_ON_SIDE}"/>')
         items.append((gx + gy, gx, "".join(out)))
 
-    lamp_pos = []
-    for sr in sorted(street_r):
-        step = 6
-        k0 = rr.randrange(step)
-        ring = [(x, -sr) for x in range(-sr, sr)] + [(sr, y) for y in range(-sr, sr)] + \
-               [(x, sr) for x in range(sr, -sr, -1)] + [(-sr, y) for y in range(sr, -sr, -1)]
-        for i, (tx, ty) in enumerate(ring):
-            if (i + k0) % step == 0:
-                ox = .42 if tx == sr else -.42 if tx == -sr else 0
-                oy = .42 if ty == sr else -.42 if ty == -sr else 0
-                lamp_pos.append((tx + ox, ty + oy))
-    for i, (gx, gy) in enumerate(lamp_pos):
+    # ── empty lots (no contribution that day, or spare cells in a block) get greenery: 4 kinds, one per lot
+    trng = random.Random(f"trees-{updated}-{total}")
+    for gx, gy in empties + plot_extra:
+        cx, cy = P(gx, gy)
+        kind = trng.randrange(4)
+        j = trng.choice((-1, 1)) * TW * .05 * trng.random()
+        cx += j
+        k = TW / 22
+        g1, g2 = trng.choice((("#2ea043", "#238636"), ("#3fb950", "#2ea043"), ("#2d8a4e", "#1f6f3a")))
+        shade = f'<ellipse cx="{cx:.1f}" cy="{cy+1:.1f}" rx="{5.5*k:.1f}" ry="{2.6*k:.1f}" fill="#000" opacity=".28"/>'
+        trunk = lambda w, hgt_: f'<rect x="{cx-w/2:.1f}" y="{cy-hgt_:.1f}" width="{w:.1f}" height="{hgt_:.1f}" fill="#6b4a2b"/>'
+        if kind == 0:      # round tree
+            svg = (shade + trunk(1.8*k, 6*k) +
+                   f'<circle cx="{cx:.1f}" cy="{cy-10*k:.1f}" r="{5.6*k:.1f}" fill="{g2}"/>'
+                   f'<circle cx="{cx-1.4*k:.1f}" cy="{cy-11.4*k:.1f}" r="{4*k:.1f}" fill="{g1}"/>')
+        elif kind == 1:    # pine
+            svg = shade + trunk(1.6*k, 4*k)
+            for i, (yy, ww) in enumerate(((4, 6.5), (8, 5.2), (12, 3.8))):
+                svg += (f'<polygon points="{cx-ww*k:.1f},{cy-yy*k:.1f} {cx+ww*k:.1f},{cy-yy*k:.1f} {cx:.1f},{cy-(yy+6.5)*k:.1f}" '
+                        f'fill="{g2 if i % 2 == 0 else g1}"/>')
+        elif kind == 2:    # bushes
+            svg = (shade +
+                   f'<circle cx="{cx-2.6*k:.1f}" cy="{cy-2.6*k:.1f}" r="{3.2*k:.1f}" fill="{g2}"/>'
+                   f'<circle cx="{cx+2.6*k:.1f}" cy="{cy-2.2*k:.1f}" r="{3*k:.1f}" fill="{g2}"/>'
+                   f'<circle cx="{cx:.1f}" cy="{cy-4.4*k:.1f}" r="{3.4*k:.1f}" fill="{g1}"/>')
+        else:              # tall cypress / poplar
+            svg = (shade + trunk(1.4*k, 3*k) +
+                   f'<ellipse cx="{cx:.1f}" cy="{cy-9*k:.1f}" rx="{2.8*k:.1f}" ry="{8*k:.1f}" fill="{g2}"/>'
+                   f'<ellipse cx="{cx-.7*k:.1f}" cy="{cy-10*k:.1f}" rx="{1.7*k:.1f}" ry="{6*k:.1f}" fill="{g1}"/>')
+        items.append((gx + gy, gx, svg))
+
+    lamp_pos = set()
+    for bx, by, bw, bh in blocks:                      # lamps on the kerb all round every block
+        x0, x1, y0, y1 = bx - .5 - c0, bx + bw - .5 - c0, by - .5 - c0, by + bh - .5 - c0
+        for i in range(0, bw, 3):
+            lamp_pos |= {(bx + i - c0, y0), (bx + i - c0, y1)}
+        for i in range(0, bh, 3):
+            lamp_pos |= {(x0, by + i - c0), (x1, by + i - c0)}
+        lamp_pos |= {(x0, y0), (x1, y0), (x0, y1), (x1, y1)}
+    for i, (gx, gy) in enumerate(sorted(lamp_pos)):
         x, y = P(gx, gy)
         ph = 8 * s + 2
         cls = f' class="lf{i % 3}"' if i % 5 == 0 else ""
@@ -861,22 +922,24 @@ def build_city_concentric(calendar, repos, updated):
                       f'<circle cx="{x:.1f}" cy="{y-ph:.1f}" r="4.5" fill="url(#lamp)"/>'))
     items.sort(key=lambda t: (t[0], t[1]))
 
-    # ── cars: one per repo, each driving its own street (cars sit under the buildings in the draw order,
-    #    so a building in front of a road hides the car, like in a real isometric view)
+    # ── cars: one per repo, each driving round its own block (cars sit under the buildings in the draw
+    #    order, so a building in front of a road hides the car, like in a real isometric view)
     cars = []
-    order = sorted(street_r)
-    rr.shuffle(order)
-    for i, repo in enumerate(repos):
-        sr = order[i]
-        ccw = rr.random() < .5
-        rc = min(1.3, sr * .45)
-        a = (lambda gx, gy: (gy, gx)) if ccw else (lambda gx, gy: (gx, gy))
-        segs = [("M", [(-sr + rc, -sr)]), ("L", [(sr - rc, -sr)]), ("Q", [(sr, -sr), (sr, -sr + rc)]), ("L", [(sr, sr - rc)]),
-                ("Q", [(sr, sr), (sr - rc, sr)]), ("L", [(-sr + rc, sr)]), ("Q", [(-sr, sr), (-sr, sr - rc)]),
-                ("L", [(-sr, -sr + rc)]), ("Q", [(-sr, -sr), (-sr + rc, -sr)])]
-        path = "".join(c + " ".join(pt(*a(gx, gy)) for gx, gy in ps) for c, ps in segs) + "Z"
-        length = sum(math.dist(P(*a(*p0)), P(*a(*p1))) for p0, p1 in
-                     (((-sr, -sr), (sr, -sr)), ((sr, -sr), (sr, sr)), ((sr, sr), (-sr, sr)), ((-sr, sr), (-sr, -sr))))
+    lane = .22                                          # drive on your own side of the road
+    owners = rr.sample(blocks, min(N, len(blocks)))
+    for i, (bx, by, bw, bh) in enumerate(owners):
+        x0, x1 = bx - 1 + lane - c0, bx + bw - lane - c0
+        y0, y1 = by - 1 + lane - c0, by + bh - lane - c0
+        rc = min(.9, (x1 - x0) / 3, (y1 - y0) / 3)
+        if rr.random() < .5:
+            segs = [("M", [(x0 + rc, y0)]), ("L", [(x1 - rc, y0)]), ("Q", [(x1, y0), (x1, y0 + rc)]), ("L", [(x1, y1 - rc)]),
+                    ("Q", [(x1, y1), (x1 - rc, y1)]), ("L", [(x0 + rc, y1)]), ("Q", [(x0, y1), (x0, y1 - rc)]),
+                    ("L", [(x0, y0 + rc)]), ("Q", [(x0, y0), (x0 + rc, y0)])]
+        else:
+            segs = [("M", [(x0 + rc, y0)]), ("Q", [(x0, y0), (x0, y0 + rc)]), ("L", [(x0, y1 - rc)]), ("Q", [(x0, y1), (x0 + rc, y1)]),
+                    ("L", [(x1 - rc, y1)]), ("Q", [(x1, y1), (x1, y1 - rc)]), ("L", [(x1, y0 + rc)]), ("Q", [(x1, y0), (x1 - rc, y0)])]
+        path = "".join(c + " ".join(pt(*q) for q in ps) for c, ps in segs) + "Z"
+        length = sum(math.dist(P(*a), P(*b)) for a, b in (((x0, y0), (x1, y0)), ((x1, y0), (x1, y1)), ((x1, y1), (x0, y1)), ((x0, y1), (x0, y0))))
         dur = length / (16 + 14 * rr.random())
         begin = -dur * rr.random()
         col = CAR_COLORS[i % len(CAR_COLORS)]
@@ -899,23 +962,43 @@ def build_city_concentric(calendar, repos, updated):
         stars.append(f'<circle{cl} cx="{x:.1f}" cy="{y:.1f}" r="{(.6, .8, 1.1)[i % 3]}" fill="#c9d1d9" opacity="{.35 + next(rnd) * .5:.2f}"/>')
     busiest_d, busiest_n = max(days, key=lambda t: t[1]) if days else (None, 0)
     named = [r["name"] for r in repos if r.get("name")]
-    info = [f'<tspan class="cy" font-weight="700">{total:,}</tspan> contributions · last 365 days',
-            f'busiest day <tspan class="fg">{busiest_d:%b} {busiest_d.day}</tspan> · {busiest_n}' if busiest_n else "",
-            f'<tspan class="cy" font-weight="700">{N}</tspan> repos · one street and one car each']
-    info_svg = "".join(f'<text x="{FR-36}" y="{150 + i*20}" text-anchor="end" class="dim" style="font-size:12px">{t}</text>'
-                       for i, t in enumerate(info) if t)
+    ix = FR - 36                                        # right edge of the info block; icons sit there, text ends left of them
+    def _ico_wins(a, b, fill):                           # small lit windows on one wall of the building icon
+        d = ""
+        for v0 in (2.5, 5.7, 8.9, 12.1):
+            for u0 in (.2, .58):
+                pts = [(a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u - v) for u, v in ((u0, v0), (u0 + .24, v0), (u0 + .24, v0 + 1.8), (u0, v0 + 1.8))]
+                d += "M" + "L".join(f"{x:.1f},{y:.1f}" for x, y in pts) + "Z"
+        return f'<path d="{d}" fill="{fill}"/>'
+    ico_b = (f'<path d="M-6,-1L0,2.5V-13.5L-6,-17Z" fill="{CITY["wall_l"]}"/><path d="M0,2.5L6,-1V-17L0,-13.5Z" fill="{CITY["wall_r"]}"/>'
+             f'<path d="M0,-20.5L6,-17L0,-13.5L-6,-17Z" fill="{ROOFS[-1]}"/>'
+             + _ico_wins((-6, -1), (0, 2.5), WIN_ON) + _ico_wins((0, 2.5), (6, -1), WIN_ON_SIDE))
+    ico_c = ('<polygon points="7,-3.6 7,-1.6 17,1 17,-5.6" fill="url(#beam)"/><rect x="-7" y="-5" width="14" height="5" rx="1.6" fill="%s"/><rect x="-3.6" y="-8" width="7.4" height="4" rx="1.4" fill="%s"/>'
+             '<circle cx="-4" cy="0" r="1.7" fill="#0b0f19" stroke="#8b949e" stroke-width=".7"/><circle cx="4" cy="0" r="1.7" fill="#0b0f19" stroke="#8b949e" stroke-width=".7"/>'
+             '<circle cx="7" cy="-2.6" r=".9" fill="#fff6d6"/>') % ("#ffd400", "#03040a")
+    rows = [(ico_b, f'<tspan class="cy" font-weight="700">{total:,}</tspan> contributions'),
+            (ico_c, f'<tspan class="cy" font-weight="700">{N}</tspan> repos'),
+            (None, f'busiest day <tspan class="fg">{busiest_d:%b} {busiest_d.day}</tspan> · {busiest_n}' if busiest_n else "")]
+    info_svg = ""
+    for i, (ico, txt) in enumerate(rows):
+        if not txt:
+            continue
+        y = 150 + i * 22
+        if ico:
+            info_svg += f'<g transform="translate({ix - 7},{y - 1})">{ico}</g>'
+        info_svg += f'<text x="{ix - (22 if ico else 0)}" y="{y}" text-anchor="end" class="dim" style="font-size:12px">{txt}</text>'
     ly = h - M - 24
     legend = "".join(f'<rect x="{X + 52 + i*16}" y="{ly-10}" width="11" height="11" fill="{c}"/>'
                      for i, c in enumerate(["#161b22"] + ROOFS))
     body = heading(44, "contribution-city", "// 03b") + f'''
-<g class="ln" style="animation-delay:.15s"><text x="{X}" y="96" class="dim"><tspan class="gr">$</tspan> render-city --concentric <tspan fill="#484f58"># newest day in the middle, one street per repo</tspan></text></g>
+<g class="ln" style="animation-delay:.15s"><text x="{X}" y="96" class="dim"><tspan class="gr">$</tspan> render-city --blocks <tspan fill="#484f58"># last 365 days of activity, downtown is latest</tspan></text></g>
 <g>{"".join(stars)}</g>
 <circle cx="110" cy="170" r="40" fill="url(#moonglow)"/>
 <circle cx="110" cy="170" r="14" fill="#e6edf3"/>
 <circle cx="116" cy="165" r="12.5" fill="#03040a"/>
 {info_svg}
 {ground}
-{roads}{road_edges}{centre_lines}
+{centre_lines}
 {plots}
 {"".join(cars)}
 {"".join(t[2] for t in items)}
@@ -927,11 +1010,12 @@ def build_city_concentric(calendar, repos, updated):
     defs = ('<radialGradient id="moonglow"><stop offset="0" stop-color="#f0f6fc" stop-opacity=".22"/><stop offset="1" stop-color="#f0f6fc" stop-opacity="0"/></radialGradient>'
             '<radialGradient id="lamp"><stop offset="0" stop-color="#ffd98a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd98a" stop-opacity="0"/></radialGradient>'
             '<linearGradient id="beam" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#fff6d6" stop-opacity=".6"/><stop offset="1" stop-color="#fff6d6" stop-opacity="0"/></linearGradient>')
-    desc = (f"Contribution city, concentric variation: an isometric night city with one building per day of the last year, "
-            f"newest day in the middle, {total:,} contributions. {N} ring roads, one per repository contributed to"
-            + (": " + ", ".join(named) if named else "") + ", each with a car driving it and street lamps along the road.")
-    return slice_svg(h, body, title="Contribution city (concentric)", desc=desc,
-                     text="~/contribution-city// 03b$ render-city --concentric # newest day in the middle, one street per repoquietskyscraper",
+    desc = (f"Contribution city, blocks variation: an isometric night city with one building per day of the last year, "
+            f"newest day near the middle, {total:,} contributions. {len(blocks)} blocks of buildings with roads around them"
+            + (f"; a car with headlights drives round a block for each of {N} repositories contributed to"
+               + (": " + ", ".join(named) if named else "") if N else "") + ". Street lamps line the roads.")
+    return slice_svg(h, body, title="Contribution city (blocks)", desc=desc,
+                     text="~/contribution-city// 03b$ render-city --blocks # last 365 days of activity, downtown is latestquietskyscraper",
                      css=css, defs=defs, top=True, bottom=True)
 
 
@@ -966,15 +1050,18 @@ def main():
     write("links/fill.svg", build_link_filler(len(LINKS)))
     write("stats.svg", build_stats(stats))
     if (args.data / "calendar.json").exists():
-        write("contribution-city.svg", build_city(json.load(open(args.data / "calendar.json", encoding="utf-8")), stats["updated"]))
-    if args.variants and (args.data / "calendar.json").exists():
+        cal = json.load(open(args.data / "calendar.json", encoding="utf-8"))
         repos = []
         for f in (args.data / "repos.json", REPO / "_dev" / "repos.demo.json"):   # demo file: local dev fallback only
             if f.exists() and json.load(open(f, encoding="utf-8")):
                 repos = json.load(open(f, encoding="utf-8"))
                 break
-        write("contribution-city-concentric.svg",
-              build_city_concentric(json.load(open(args.data / "calendar.json", encoding="utf-8")), repos, stats["updated"]))
+        models = {1: lambda: build_city(cal, stats["updated"]),
+                  2: lambda: build_city_concentric(cal, repos, stats["updated"])}
+        write("contribution-city.svg", models[CITY_MODEL]())
+        if args.variants:                         # preview only: also render the model that is NOT in use
+            other = 1 if CITY_MODEL == 2 else 2
+            write("contribution-city-alt.svg", models[other]())
     write("projects.svg", build_projects_head())
     for i, p in enumerate(PROJECTS):
         write(f"card-{p['slug']}.svg", build_card(p, "L" if i % 2 == 0 else "R", 0.3 + i * 0.12, stars))
@@ -984,6 +1071,7 @@ def main():
         write(f"writing/post-{i+1}.svg", build_article_row(a, i))
     write("writing/all-articles.svg", build_writing_more())
     write("footer.svg", build_footer())
+    write("credits.svg", build_credits())
     print("rendered", len(list(OUT.rglob("*.svg"))), "SVGs into", OUT)
 
 

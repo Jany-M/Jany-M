@@ -20,7 +20,7 @@ sys.path.insert(0, str(HERE))
 from themes import THEMES, DEFAULT
 
 # experimental city variations, shown below the real README (not part of it): (file, label)
-VARIANTS = [("assets/contribution-city-concentric.svg", "Variation 2: concentric city (newest day in the middle, one street + one car per repo)")]
+VARIANTS = [("assets/contribution-city-alt.svg", "Alternative city model (the one NOT selected by CITY_MODEL in render.py)")]
 
 def _write(path, text):
     """UTF-8 + LF on every OS (Windows would otherwise write cp1252 / CRLF and dirty the repo)."""
