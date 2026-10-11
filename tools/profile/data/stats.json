@@ -1,8 +1,8 @@
 {
   "created_at": "2013-05-07T14:11:45Z",
   "followers": 27,
-  "prs": 133,
-  "prs_merged": 110,
+  "prs": 134,
+  "prs_merged": 111,
   "stars": 51,
   "forks": 8,
   "repo_count": 56,
@@ -27,10 +27,10 @@
     "Jany-M": 1
   },
   "languages": {
-    "JavaScript": 16315,
-    "PHP": 10913,
-    "TypeScript": 10389,
-    "Python": 8166,
+    "JavaScript": 16328,
+    "PHP": 10943,
+    "TypeScript": 10391,
+    "Python": 8202,
     "Dart": 4446,
     "Jupyter Notebook": 3920,
     "Java": 1250,
@@ -43,7 +43,7 @@
     "EJS": 328,
     "Objective-C++": 292,
     "Ruby": 286,
-    "PLpgSQL": 235,
+    "PLpgSQL": 236,
     "C#": 232,
     "Swift": 203,
     "Vue": 174,
@@ -53,10 +53,10 @@
     "Mako": 25
   },
   "year": 2026,
-  "contributions_year": 5338,
-  "contributions_all": 8311,
-  "commits_all": 8016,
-  "streak_current": 3,
+  "contributions_year": 5407,
+  "contributions_all": 8380,
+  "commits_all": 8084,
+  "streak_current": 5,
   "streak_longest": 24,
-  "updated": "2026-10-10"
+  "updated": "2026-10-11"
 }
