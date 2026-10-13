@@ -2,7 +2,7 @@
   {
     "name": null,
     "private": true,
-    "count": 3530
+    "count": 3526
   },
   {
     "name": null,
@@ -12,7 +12,7 @@
   {
     "name": null,
     "private": true,
-    "count": 119
+    "count": 124
   },
   {
     "name": null,
@@ -40,14 +40,14 @@
     "count": 43
   },
   {
+    "name": null,
+    "private": true,
+    "count": 41
+  },
+  {
     "name": "Jany-M/discord-github-bot",
     "private": false,
     "count": 40
-  },
-  {
-    "name": null,
-    "private": true,
-    "count": 38
   },
   {
     "name": null,
