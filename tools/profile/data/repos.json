@@ -2,17 +2,17 @@
   {
     "name": null,
     "private": true,
-    "count": 3514
+    "count": 3518
   },
   {
     "name": null,
     "private": true,
-    "count": 1873
+    "count": 1885
   },
   {
     "name": null,
     "private": true,
-    "count": 139
+    "count": 142
   },
   {
     "name": null,
@@ -98,11 +98,6 @@
     "name": "Jany-M/ReWin",
     "private": false,
     "count": 7
-  },
-  {
-    "name": "Jany-M/wc-just-bought",
-    "private": false,
-    "count": 5
   },
   {
     "name": "Jany-M/github-failed-actions-mcp-companion",
