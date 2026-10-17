@@ -2,7 +2,7 @@
   {
     "name": null,
     "private": true,
-    "count": 3514
+    "count": 3488
   },
   {
     "name": null,
@@ -48,6 +48,11 @@
     "name": "Jany-M/discord-github-bot",
     "private": false,
     "count": 40
+  },
+  {
+    "name": "Jany-M/agent-spaghetti",
+    "private": false,
+    "count": 36
   },
   {
     "name": null,
@@ -110,12 +115,12 @@
     "count": 2
   },
   {
-    "name": "Patcherly-Official/php-connector",
+    "name": "Patcherly-Official/patcherly-mcp-plugins",
     "private": false,
     "count": 1
   },
   {
-    "name": "Patcherly-Official/patcherly-mcp-plugins",
+    "name": "Patcherly-Official/php-connector",
     "private": false,
     "count": 1
   },
