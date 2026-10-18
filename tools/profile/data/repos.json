@@ -2,7 +2,7 @@
   {
     "name": null,
     "private": true,
-    "count": 3488
+    "count": 3478
   },
   {
     "name": null,
@@ -13,6 +13,11 @@
     "name": null,
     "private": true,
     "count": 145
+  },
+  {
+    "name": "Jany-M/agent-spaghetti",
+    "private": false,
+    "count": 62
   },
   {
     "name": null,
@@ -48,11 +53,6 @@
     "name": "Jany-M/discord-github-bot",
     "private": false,
     "count": 40
-  },
-  {
-    "name": "Jany-M/agent-spaghetti",
-    "private": false,
-    "count": 36
   },
   {
     "name": null,
@@ -95,14 +95,14 @@
     "count": 9
   },
   {
-    "name": "HKUDS/DeepCode",
-    "private": false,
-    "count": 8
-  },
-  {
     "name": "Jany-M/ReWin",
     "private": false,
     "count": 7
+  },
+  {
+    "name": "HKUDS/DeepCode",
+    "private": false,
+    "count": 6
   },
   {
     "name": "Jany-M/github-failed-actions-mcp-companion",
