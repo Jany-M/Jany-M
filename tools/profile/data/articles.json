@@ -1,5 +1,11 @@
 [
   {
+    "published_at": "2026-10-22T17:33:39",
+    "title": "Critical PHP Vulnerabilities (CVE-2026-109618 and CVE-2026-109619): What to Do Right Now",
+    "url": "https://www.shambix.com/php-critical-vulnerabilities-cve-2026-109618-cve-2026-109619/",
+    "category": "WordPress & WooCommerce"
+  },
+  {
     "published_at": "2026-10-04T00:37:50",
     "title": "Why Businesses Are Moving AI On-Premise: Privacy, Predictable Costs and Control",
     "url": "https://www.shambix.com/on-premise-ai-for-business/",
@@ -22,11 +28,5 @@
     "title": "Shambix Growth Console: an AI SEO Plugin for WordPress That Tells You What to Do Next",
     "url": "https://www.shambix.com/shambix-growth-console-wordpress-seo-plugin/",
     "category": "WordPress & WooCommerce"
-  },
-  {
-    "published_at": "2026-08-29T00:59:45",
-    "title": "From a Real Problem to a Working Web App",
-    "url": "https://www.shambix.com/from-a-real-problem-to-a-working-web-app/",
-    "category": "Custom Development"
   }
 ]
