@@ -1,11 +1,11 @@
 <p align="center">
 <img src="./assets/header.svg?v=9f26692c" width="100%" align="top" alt="Jany Martelli — computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast.">
 <a href="https://www.linkedin.com/in/janymartelli"><img src="./assets/links/linkedin.svg?v=43f3e7d7" width="20%" align="top" alt="LinkedIn"></a><a href="https://www.shambix.com"><img src="./assets/links/shambix.svg?v=3ec65a1c" width="20%" align="top" alt="Shambix"></a><img src="./assets/links/fill.svg?v=18b9968e" width="60%" align="top" alt="">
-<img src="./assets/stats.svg?v=991c07dc" width="100%" align="top" alt="Stats: 54 total stars; 6080 contributions in 2026, 9053 all time; 148 pull requests (125 merged); current streak 0 days, longest 24 days; 26 followers; 9 forks; member since May 2013. Top languages: JavaScript, TypeScript, PHP, Python, Dart.">
-<img src="./assets/contribution-city.svg?v=7939bd9d" width="100%" align="top" alt="Contribution city: an isometric night skyline with one building per day of the last year. 6,413 contributions, busiest day July 11 with 177.">
+<img src="./assets/stats.svg?v=801f99e2" width="100%" align="top" alt="Stats: 55 total stars; 6080 contributions in 2026, 9053 all time; 148 pull requests (125 merged); current streak 0 days, longest 24 days; 26 followers; 9 forks; member since May 2013. Top languages: JavaScript, TypeScript, PHP, Python, Dart.">
+<img src="./assets/contribution-city.svg?v=7c768725" width="100%" align="top" alt="Contribution city: an isometric night skyline with one building per day of the last year. 6,413 contributions, busiest day July 11 with 177.">
 <img src="./assets/projects.svg?v=634228ec" width="100%" align="top" alt="Projects">
 <a href="https://github.com/Patcherly"><img src="./assets/card-patcherly.svg?v=61b953f0" width="50%" align="top" alt="Patcherly"></a><a href="https://github.com/Jany-M/repo-visualizer"><img src="./assets/card-repo-visualizer.svg?v=d9c55e59" width="50%" align="top" alt="repo-visualizer"></a>
-<a href="https://github.com/Jany-M/airflow-simulator"><img src="./assets/card-airflow-simulator.svg?v=dbd0b8d1" width="50%" align="top" alt="airflow-simulator"></a><a href="https://github.com/Jany-M?tab=repositories"><img src="./assets/card-more.svg?v=a6249325" width="50%" align="top" alt="More on GitHub"></a>
+<a href="https://github.com/Jany-M/airflow-simulator"><img src="./assets/card-airflow-simulator.svg?v=4a6e576b" width="50%" align="top" alt="airflow-simulator"></a><a href="https://github.com/Jany-M?tab=repositories"><img src="./assets/card-more.svg?v=a6249325" width="50%" align="top" alt="More on GitHub"></a>
 <img src="./assets/stack.svg?v=447ec7bb" width="100%" align="top" alt="Tech stack">
 <img src="./assets/writing.svg?v=8a418564" width="100%" align="top" alt="Writing: latest articles on the Shambix blog">
 <!-- writing:start -->

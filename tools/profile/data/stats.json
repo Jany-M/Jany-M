@@ -3,7 +3,7 @@
   "followers": 26,
   "prs": 148,
   "prs_merged": 125,
-  "stars": 54,
+  "stars": 55,
   "forks": 9,
   "repo_count": 59,
   "repo_stars": {
@@ -23,7 +23,7 @@
     "ReWin": 4,
     "repo-visualizer": 14,
     "mempalace-cloud-sync": 2,
-    "airflow-simulator": 10,
+    "airflow-simulator": 11,
     "Jany-M": 2,
     "agent-spaghetti": 0
   },
@@ -59,5 +59,5 @@
   "commits_all": 8740,
   "streak_current": 0,
   "streak_longest": 24,
-  "updated": "2026-11-13"
+  "updated": "2026-11-14"
 }
