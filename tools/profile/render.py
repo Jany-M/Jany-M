@@ -536,14 +536,13 @@ def build_writing_more():
 
 
 # ──────────────────────────────── links ───────────────────────────────
-# Same pattern as project cards: separate SVGs wrapped in <a href> in the README.
+# Same pattern as project cards: half-width SVGs, each wrapped in <a href> in the README.
 LINKS = [
     ("linkedin", "LinkedIn", "in/janymartelli", "https://www.linkedin.com/in/janymartelli"),
     ("shambix", "Shambix", "shambix.com", "https://www.shambix.com"),
 ]
 ICONS = json.load(open(HERE / "icons.json", encoding="utf-8"))
-SEG = W // 5     # 176 px per button slice
-BTN_W, BTN_GAP = 124, 39  # buttons line up with the text column (x = 52 … 828)
+LINK_H = 120   # multiple of 40; matches the console grid
 
 
 def icon_markup(key, x, y, size=18):
@@ -558,64 +557,26 @@ def icon_markup(key, x, y, size=18):
 
 
 def build_link_button(k):
+    """Half-width link card (L/R), same frame language as project cards so the row lines up."""
     key, label, handle, url = LINKS[k]
-    h = 80
-    x0 = SEG * k                       # this slice's position inside the full-width row
-    lx = X + k * (BTN_W + BTN_GAP) - x0
-    first, last = k == 0, False
-    bg0 = FL - x0 if first else 0
-    bg1 = FR - x0 if last else SEG
-    rails = (f"M{FL - x0} 0V{h}" if first else "") + (f"M{FR - x0} 0V{h}" if last else "")
-    glow = (f"M{FL - x0} -40V{h+40}" if first else "") + (f"M{FR - x0} -40V{h+40}" if last else "")
-    by, bh, cut = 12, 56, 12
-    box = f"M{lx} {by}H{lx+BTN_W-cut}L{lx+BTN_W} {by+cut}V{by+bh}H{lx}Z"
-    text = label + handle + "inS"
+    side = "L" if k % 2 == 0 else "R"
+    x0 = 52 if side == "L" else 10
+    cw, y0, ch, pad, cut = 378, 12, 96, 18, 16
+    tx = x0 + pad
+    box = f"M{x0} {y0}H{x0+cw-cut}L{x0+cw} {y0+cut}V{y0+ch}H{x0+cut}L{x0} {y0+ch-cut}Z"
+    ix, iy = tx, y0 + 28
     body = f'''<g class="ln" style="animation-delay:{.25 + k*.08:.2f}s">
-<path d="{box}" fill="{CYAN}" fill-opacity=".05"/>
-<path d="{box}" fill="none" stroke="{CYAN}" stroke-opacity=".55"/>
-<path d="M{lx+BTN_W-cut} {by}L{lx+BTN_W} {by+cut}" stroke="{CYAN}" stroke-width="2"/>
-<g filter="url(#g)" opacity=".5">{icon_markup(key, lx+12, by+11)}</g>
-{icon_markup(key, lx+12, by+11)}
-<text x="{lx+38}" y="{by+25}" font-weight="700" class="cy" style="font-size:13px">{e(label)}</text>
-<text x="{lx+12}" y="{by+46}" class="dim" style="font-size:10px">{e(handle)}</text>
+<path d="{box}" fill="{CYAN}" fill-opacity=".035"/>
+<path d="{box}" fill="none" stroke="{CYAN}" stroke-opacity=".4"/>
+<path d="M{x0+cw-cut} {y0}L{x0+cw} {y0+cut}" stroke="{CYAN}" stroke-width="2"/>
+<g filter="url(#g)" opacity=".5">{icon_markup(key, ix, iy, 22)}</g>
+{icon_markup(key, ix, iy, 22)}
+<text x="{ix+34}" y="{iy+16}" font-weight="700" class="cy" style="font-size:16px">{e(label)}</text>
+<path d="M{ix+34 + round(len(label)*10.2) + 8} {iy+13}l8-8M{ix+34 + round(len(label)*10.2) + 10} {iy+5}h6v6" fill="none" stroke="{CYAN}" stroke-width="1.6"/>
+<text x="{tx}" y="{y0+78}" class="dim" style="font-size:12px">{e(handle)}</text>
 </g>'''
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{SEG}" height="{h}" viewBox="0 0 {SEG} {h}" role="img" aria-labelledby="t d">
-<title id="t">{e(label)}</title>
-<desc id="d">{e(label)}: {e(url)}</desc>
-<style>
-{faces(text + visible(body))}
-{BASE_CSS}
-@media (prefers-reduced-motion:reduce){{*{{animation:none!important}}}}
-</style>
-<defs>
-<pattern id="grid" x="{(-x0) % 40}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".06"/></pattern>
-<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
-<filter id="g" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
-</defs>
-{f'<path d="{glow}" fill="none" stroke="{CYAN}" stroke-width="3" opacity=".55" filter="url(#glow)"/>' if glow else ""}
-<rect x="{bg0}" y="0" width="{bg1-bg0}" height="{h}" fill="#03040a"/>
-<rect x="{bg0}" y="0" width="{bg1-bg0}" height="{h}" fill="url(#grid)"/>
-{body}
-{f'<path d="{rails}" fill="none" stroke="{CYAN}" stroke-width="1.2"/>' if rails else ""}
-</svg>
-'''
-
-
-def build_link_filler(first_slot):
-    h, x0 = 80, SEG * first_slot
-    w = W - x0
-    rx = FR - x0
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-hidden="true">
-<defs>
-<pattern id="grid" x="{(-x0) % 40}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".06"/></pattern>
-<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
-</defs>
-<path d="M{rx} -40V{h+40}" fill="none" stroke="{CYAN}" stroke-width="3" opacity=".55" filter="url(#glow)"/>
-<rect x="0" y="0" width="{rx}" height="{h}" fill="#03040a"/>
-<rect x="0" y="0" width="{rx}" height="{h}" fill="url(#grid)"/>
-<path d="M{rx} 0V{h}" fill="none" stroke="{CYAN}" stroke-width="1.2"/>
-</svg>
-'''
+    text = label + handle + "inS"
+    return half_slice(LINK_H, side, body, title=label, desc=f"{label}: {url}", text=text)
 
 
 # ─────────────────────────── contribution city ────────────────────────
@@ -1069,7 +1030,6 @@ def main():
     write("header.svg", build_header())
     for k, (key, *_) in enumerate(LINKS):
         write(f"links/{key}.svg", build_link_button(k))
-    write("links/fill.svg", build_link_filler(len(LINKS)))
     write("stats.svg", build_stats(stats))
     if (args.data / "calendar.json").exists():
         cal = json.load(open(args.data / "calendar.json", encoding="utf-8"))
