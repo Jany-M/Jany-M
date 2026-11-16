@@ -10,13 +10,13 @@
 <img src="./assets/stack.svg?v=02a4b9e1" width="100%" align="top" alt="Tech stack">
 <img src="./assets/writing.svg?v=af8b83aa" width="100%" align="top" alt="Writing: latest articles on the Shambix blog">
 <!-- writing:start -->
-<a href="https://www.shambix.com/php-critical-vulnerabilities-cve-2026-109618-cve-2026-109619/"><img src="./assets/writing/post-1.svg?v=0a167d06" width="100%" align="top" alt="Critical PHP Vulnerabilities (CVE-2026-109618 and CVE-2026-109619): What to Do Right Now — published 2026-10-22, WordPress &amp; WooCommerce"></a>
-<a href="https://www.shambix.com/on-premise-ai-for-business/"><img src="./assets/writing/post-2.svg?v=817964db" width="100%" align="top" alt="Why Businesses Are Moving AI On-Premise: Privacy, Predictable Costs and Control — published 2026-10-04, AI - Artificial Intelligence"></a>
-<a href="https://www.shambix.com/ai-agents-for-business-guide/"><img src="./assets/writing/post-3.svg?v=4470ffbf" width="100%" align="top" alt="AI Agents for Business: Examples, Costs and How to Start a Pilot — published 2026-10-04, AI - Artificial Intelligence"></a>
-<a href="https://www.shambix.com/custom-app-development-cost/"><img src="./assets/writing/post-4.svg?v=24894073" width="100%" align="top" alt="How Much Does Custom App Development Cost? What Drives the Price — published 2026-10-04, Custom Development"></a>
-<a href="https://www.shambix.com/shambix-growth-console-wordpress-seo-plugin/"><img src="./assets/writing/post-5.svg?v=1b70515e" width="100%" align="top" alt="Shambix Growth Console: an AI SEO Plugin for WordPress That Tells You What to Do Next — published 2026-09-30, WordPress &amp; WooCommerce"></a>
+<a href="https://www.shambix.com/php-critical-vulnerabilities-cve-2026-109618-cve-2026-109619/"><img src="./assets/writing/post-1.svg?v=933ceffd" width="100%" align="top" alt="Critical PHP Vulnerabilities (CVE-2026-109618 and CVE-2026-109619): What to Do Right Now — published 2026-10-22, WordPress &amp; WooCommerce"></a>
+<a href="https://www.shambix.com/on-premise-ai-for-business/"><img src="./assets/writing/post-2.svg?v=9a7b9b07" width="100%" align="top" alt="Why Businesses Are Moving AI On-Premise: Privacy, Predictable Costs and Control — published 2026-10-04, AI - Artificial Intelligence"></a>
+<a href="https://www.shambix.com/ai-agents-for-business-guide/"><img src="./assets/writing/post-3.svg?v=87c96052" width="100%" align="top" alt="AI Agents for Business: Examples, Costs and How to Start a Pilot — published 2026-10-04, AI - Artificial Intelligence"></a>
+<a href="https://www.shambix.com/custom-app-development-cost/"><img src="./assets/writing/post-4.svg?v=74fef620" width="100%" align="top" alt="How Much Does Custom App Development Cost? What Drives the Price — published 2026-10-04, Custom Development"></a>
+<a href="https://www.shambix.com/shambix-growth-console-wordpress-seo-plugin/"><img src="./assets/writing/post-5.svg?v=12eac2bf" width="100%" align="top" alt="Shambix Growth Console: an AI SEO Plugin for WordPress That Tells You What to Do Next — published 2026-09-30, WordPress &amp; WooCommerce"></a>
 <!-- writing:end -->
-<a href="https://www.shambix.com/blog/"><img src="./assets/writing/all-articles.svg?v=f042e1cc" width="100%" align="top" alt="Read all articles on the Shambix blog"></a>
-<img src="./assets/footer.svg?v=df359398" width="100%" align="top" alt="Connection closed.">
+<a href="https://www.shambix.com/blog/"><img src="./assets/writing/all-articles.svg?v=12123ca4" width="100%" align="top" alt="Read all articles on the Shambix blog"></a>
+<img src="./assets/footer.svg?v=a4783d6c" width="100%" align="top" alt="Connection closed.">
 </p>
-<p align="right"><a href="https://dev.to/georgekobaidze/i-turned-my-github-profile-into-a-cyberpunk-console-with-a-city-built-from-my-contributions-h4c"><img src="./assets/credits.svg?v=90a21047" width="100%" align="top" alt="Inspiration: the original cyberpunk profile console by Giorgi Kobaidze"></a></p>
+<p align="right"><a href="https://dev.to/georgekobaidze/i-turned-my-github-profile-into-a-cyberpunk-console-with-a-city-built-from-my-contributions-h4c"><img src="./assets/credits.svg?v=928f6456" width="100%" align="top" alt="Inspiration: the original cyberpunk profile console by Giorgi Kobaidze"></a></p>
