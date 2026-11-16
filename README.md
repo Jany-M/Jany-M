@@ -1,9 +1,17 @@
 <p align="center">
-<img src="./assets/header.svg?v=60ccf945" width="100%" align="top" alt="Jany Martelli — computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast. LinkedIn: https://www.linkedin.com/in/janymartelli · Website: https://www.shambix.com">
-<img src="./assets/stats.svg?v=85eb25cd" width="100%" align="top" alt="Stats: 55 total stars; 6129 contributions in 2026, 9102 all time; 149 pull requests (126 merged); current streak 2 days, longest 24 days; 26 followers; 9 forks; member since 2013. Top languages: JavaScript, TypeScript, PHP, Python, Dart.">
-<img src="./assets/contribution-city.svg?v=f6bda8ad" width="100%" align="top" alt="Contribution city: an isometric night skyline with one building per day of the last year. 6,434 contributions, busiest day July 11 with 177.">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="73%" valign="top" rowspan="2"><img src="./assets/header.svg?v=72914736" width="100%" align="top" alt="Jany Martelli — computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast."></td>
+<td width="27%" valign="top"><a href="https://www.linkedin.com/in/janymartelli"><img src="./assets/links/linkedin.svg?v=c58e239b" width="100%" align="top" alt="LinkedIn"></a></td>
+</tr>
+<tr>
+<td width="27%" valign="top"><a href="https://www.shambix.com"><img src="./assets/links/shambix.svg?v=2e001641" width="100%" align="top" alt="Shambix"></a></td>
+</tr>
+</table>
+<img src="./assets/stats.svg?v=20287cea" width="100%" align="top" alt="Stats: 56 total stars; 6138 contributions in 2026, 9111 all time; 151 pull requests (128 merged); current streak 1 day, longest 24 days; 26 followers; 9 forks; member since 2013. Top languages: JavaScript, TypeScript, PHP, Python, Dart.">
+<img src="./assets/contribution-city.svg?v=0fc6bd72" width="100%" align="top" alt="Contribution city: an isometric night skyline with one building per day of the last year. 6,443 contributions, busiest day July 11 with 177.">
 <img src="./assets/projects.svg?v=eb93b73a" width="100%" align="top" alt="Projects">
-<a href="https://github.com/Patcherly"><img src="./assets/card-patcherly.svg?v=63d00946" width="50%" align="top" alt="Patcherly"></a><a href="https://github.com/Jany-M/repo-visualizer"><img src="./assets/card-repo-visualizer.svg?v=b40df4d5" width="50%" align="top" alt="repo-visualizer"></a>
+<a href="https://github.com/Patcherly"><img src="./assets/card-patcherly.svg?v=63d00946" width="50%" align="top" alt="Patcherly"></a><a href="https://github.com/Jany-M/repo-visualizer"><img src="./assets/card-repo-visualizer.svg?v=be36281d" width="50%" align="top" alt="repo-visualizer"></a>
 <a href="https://github.com/Jany-M/airflow-simulator"><img src="./assets/card-airflow-simulator.svg?v=f65a169f" width="50%" align="top" alt="airflow-simulator"></a><a href="https://github.com/Jany-M/parla"><img src="./assets/card-parla.svg?v=3ab80f80" width="50%" align="top" alt="parla"></a>
 <a href="https://github.com/Jany-M?tab=repositories"><img src="./assets/card-more.svg?v=ca9f52d6" width="100%" align="top" alt="More on GitHub"></a>
 <img src="./assets/stack.svg?v=02a4b9e1" width="100%" align="top" alt="Tech stack">
