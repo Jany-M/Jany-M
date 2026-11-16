@@ -37,7 +37,7 @@
   {
     "name": "Jany-M/repo-visualizer",
     "private": false,
-    "count": 51
+    "count": 52
   },
   {
     "name": null,
@@ -70,12 +70,12 @@
     "count": 24
   },
   {
-    "name": "Jany-M/mempalace-cloud-sync",
+    "name": "Jany-M/airflow-simulator",
     "private": false,
-    "count": 21
+    "count": 23
   },
   {
-    "name": "Jany-M/airflow-simulator",
+    "name": "Jany-M/mempalace-cloud-sync",
     "private": false,
     "count": 21
   },
@@ -85,9 +85,14 @@
     "count": 13
   },
   {
+    "name": "Jany-M/parla",
+    "private": false,
+    "count": 13
+  },
+  {
     "name": "Jany-M/Jany-M",
     "private": false,
-    "count": 10
+    "count": 12
   },
   {
     "name": null,
