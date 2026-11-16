@@ -53,7 +53,7 @@ def stats_alt(d):
              f'{d["prs"]} pull requests ({d["prs_merged"]} merged)',
              f'current streak {days(d["streak_current"])}, longest {days(d["streak_longest"])}',
              f'{d["followers"]} followers', f'{d["forks"]} forks',
-             f'member since {since:%B %Y}']
+             f'member since {since:%Y}']
     text = "Stats: " + "; ".join(parts) + ". Top languages: " + ", ".join(k for k, _ in langs) + "."
     return html.escape(text, quote=True)
 

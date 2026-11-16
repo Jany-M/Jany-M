@@ -145,12 +145,30 @@ def up40(v):
 
 
 # ─────────────────────────────── header ───────────────────────────────
+def _header_link_card(x, y, key, label, handle, url, delay):
+    """Compact link card drawn inside the header (top-right, beside whoami)."""
+    bw, bh, cut = 168, 56, 12
+    box = f"M{x} {y}H{x+bw-cut}L{x+bw} {y+cut}V{y+bh}H{x}Z"
+    return f'''<a href="{e(url)}" target="_blank" rel="noopener">
+<g class="ln" style="animation-delay:{delay:.2f}s">
+<path d="{box}" fill="{CYAN}" fill-opacity=".05"/>
+<path d="{box}" fill="none" stroke="{CYAN}" stroke-opacity=".55"/>
+<path d="M{x+bw-cut} {y}L{x+bw} {y+cut}" stroke="{CYAN}" stroke-width="2"/>
+<g filter="url(#g)" opacity=".5">{icon_markup(key, x+12, y+11)}</g>
+{icon_markup(key, x+12, y+11)}
+<text x="{x+38}" y="{y+25}" font-weight="700" class="cy" style="font-size:13px">{e(label)}</text>
+<text x="{x+12}" y="{y+46}" class="dim" style="font-size:10px">{e(handle)}</text>
+</g>
+</a>'''
+
+
 def build_header():
     bar_left, bar_right = "SYS://SHAMBIX // NODE:JANY", "ONLINE · ALL SYSTEMS NOMINAL"
     name = "JANY MARTELLI"
+    name_size = 48
     lines = ["computer scientist · software engineer · tech professor", "building systems since 2009 at ",
              "open source enthusiast"]
-    text = bar_left + bar_right + name + "$ whoami>>" + "".join(lines) + "SHAMBIX"
+    text = bar_left + bar_right + name + "$ whoami>>" + "".join(lines) + "SHAMBIX" + "LinkedInShambixin/janymartellishambix.cominS"
     h = 360
     css = f"""@keyframes type{{from{{width:0}}}}
 @keyframes flicker{{0%{{opacity:0}}10%{{opacity:1}}14%{{opacity:.2}}22%{{opacity:1}}30%{{opacity:.4}}40%,100%{{opacity:1}}}}
@@ -168,6 +186,12 @@ def build_header():
             f'<text class="fg" x="{X}" y="{{y}}"><tspan class="cy">&gt;&gt;</tspan> {e(lines[1])}<tspan class="cy" font-weight="700">SHAMBIX</tspan></text>',
             f'<text class="fg" x="{X}" y="{{y}}"><tspan class="cy">&gt;&gt;</tspan> {e(lines[2])}</text>']
     desc_lines, _ = stagger(rows, 218, 24, delay0=1.75, step=0.25)
+    # LinkedIn + Shambix sit top-right, beside whoami / the name
+    link_x = FR - 36 - 168
+    link_cards = "\n".join(
+        _header_link_card(link_x, y, key, label, handle, url, 0.25 + i * 0.08)
+        for i, (y, (key, label, handle, url)) in enumerate(zip((78, 146), LINKS))
+    )
     body = f'''<rect x="{FL}" y="{M}" width="{FR-FL}" height="34" fill="{CYAN}" fill-opacity=".08"/>
 <line x1="{FL}" y1="{M+34}" x2="{FR}" y2="{M+34}" stroke="{CYAN}" stroke-opacity=".5"/>
 <text x="{FL+16}" y="{M+22}" letter-spacing="1" class="cy" style="font-size:12px">{e(bar_left)}</text>
@@ -175,12 +199,13 @@ def build_header():
 <circle class="dot" cx="{dotx}" cy="{M+18}" r="4" fill="{GREEN}"/>
 <circle class="dot" cx="{dotx}" cy="{M+18}" r="4" fill="{GREEN}" filter="url(#sglow)"/>
 <g clip-path="url(#typeclip)"><text x="{X}" y="102" class="dim"><tspan class="gr">$</tspan> whoami</text></g>
-<g class="name" font-weight="800" letter-spacing="2" style="font-size:56px">
-<text x="{X}" y="172" fill="{CYAN}" opacity=".55" filter="url(#tglow)" style="font-size:56px">{name}</text>
-<g class="gm"><text x="{X+3}" y="172" fill="{MAGENTA}" opacity=".75" style="font-size:56px">{name}</text></g>
-<g class="gc"><text x="{X-3}" y="172" fill="{CYAN}" opacity=".85" style="font-size:56px">{name}</text></g>
-<text x="{X}" y="172" fill="#f0fbff" style="font-size:56px">{name}</text>
+<g class="name" font-weight="800" letter-spacing="2" style="font-size:{name_size}px">
+<text x="{X}" y="168" fill="{CYAN}" opacity=".55" filter="url(#tglow)" style="font-size:{name_size}px">{name}</text>
+<g class="gm"><text x="{X+3}" y="168" fill="{MAGENTA}" opacity=".75" style="font-size:{name_size}px">{name}</text></g>
+<g class="gc"><text x="{X-3}" y="168" fill="{CYAN}" opacity=".85" style="font-size:{name_size}px">{name}</text></g>
+<text x="{X}" y="168" fill="#f0fbff" style="font-size:{name_size}px">{name}</text>
 </g>
+{link_cards}
 {desc_lines}
 <g class="ln" style="animation-delay:2.8s">
 <text x="{X}" y="304" class="gr">$</text>
@@ -190,7 +215,8 @@ def build_header():
 <rect x="{FL}" y="{M+35}" width="{FR-FL}" height="{h-M-35}" fill="url(#scan)"/>'''
     return slice_svg(h, body, title="Jany Martelli",
                      desc="Computer scientist, software engineer and tech professor. "
-                          "Building systems since 2009 at Shambix. Open source enthusiast.",
+                          "Building systems since 2009 at Shambix. Open source enthusiast. "
+                          "LinkedIn: https://www.linkedin.com/in/janymartelli · Website: https://www.shambix.com",
                      text=text, top=True, css=css, defs=defs, weights=(400, 700, 800))
 
 
@@ -262,9 +288,12 @@ PROJECTS = [
     dict(slug="airflow-simulator", name="airflow-simulator", url="https://github.com/Jany-M/airflow-simulator",
          tag="OPEN SOURCE", tagc=MAGENTA, stars=9, stack="TypeScript · Simulation",
          desc="Interactive cross-ventilation simulator: draw a floor plan, set the wind and find the best windows to open."),
+    dict(slug="parla", name="parla", url="https://github.com/Jany-M/parla",
+         tag="OPEN SOURCE", tagc=MAGENTA, stars=0, stack="Rust · Tauri · React",
+         desc="Local meeting notes: record any app, live transcript with speakers, translate and summarize on demand."),
     dict(slug="more", name="More on GitHub", url="https://github.com/Jany-M?tab=repositories",
          tag="REPOSITORIES", tagc=CYAN, stars=None, stack="PHP · JavaScript · Python",
-         desc="WordPress plugins and themes, MCP tools, automation scripts and more."),
+         desc="WordPress plugins and themes, MCP tools, automation scripts and more.", full=True),
 ]
 CARD_H = 200
 
@@ -276,22 +305,19 @@ def build_projects_head():
     return slice_svg(h, body, title="Projects", desc="Projects", text="~/projects// 02$ ls -l")
 
 
-def build_card(p, side, delay, stars=None):
-    p = dict(p, stars=stars.get(p["slug"], p["stars"]) if stars else p["stars"])
-    x0 = 52 if side == "L" else 10          # card box, 378 wide, 20px gutter between the two cards
-    cw, y0, ch = 378, 12, 176
-    pad = 18
+def _card_body(p, x0, cw, delay):
+    y0, ch, pad, cut = 12, 176, 18, 16
     tx = x0 + pad
-    cut = 16
     box = f"M{x0} {y0}H{x0+cw-cut}L{x0+cw} {y0+cut}V{y0+ch}H{x0+cut}L{x0} {y0+ch-cut}Z"
-    lines = textwrap.wrap(p["desc"], 43)
+    wrap = 90 if cw > 500 else 43
+    lines = textwrap.wrap(p["desc"], wrap)
     assert len(lines) <= 3, lines
     tag_w = len(p["tag"]) * 7.6 + 16
     title_w = len(p["name"]) * 10.2
     desc = "\n".join(f'<text x="{tx}" y="{100 + i*20}" class="fg" style="font-size:13px">{e(l)}</text>' for i, l in enumerate(lines))
     sx = x0 + cw - pad
     star = f'<path transform="translate({sx - len(str(p["stars"]))*7.2 - 20} 158) scale(.55)" d="M10 0l2.9 6.6 7.1.6-5.4 4.7 1.6 7L10 15.2 3.8 18.9l1.6-7L0 7.2l7.1-.6z" fill="#e3b341"/>'
-    body = f'''<g class="ln" style="animation-delay:{delay:.2f}s">
+    return f'''<g class="ln" style="animation-delay:{delay:.2f}s">
 <path d="{box}" fill="{CYAN}" fill-opacity=".035"/>
 <path d="{box}" fill="none" stroke="{CYAN}" stroke-opacity=".4"/>
 <path d="M{x0+cw-cut} {y0}L{x0+cw} {y0+cut}" stroke="{CYAN}" stroke-width="2"/>
@@ -305,9 +331,26 @@ def build_card(p, side, delay, stars=None):
 {star if p["stars"] is not None else ""}
 {f'<text x="{sx}" y="{y0+158}" text-anchor="end" class="dim" style="font-size:12px">{p["stars"]}</text>' if p["stars"] is not None else ""}
 </g>'''
+
+
+def build_card(p, side, delay, stars=None):
+    p = dict(p, stars=stars.get(p["slug"], p["stars"]) if stars else p["stars"])
+    x0 = 52 if side == "L" else 10          # card box, 378 wide, 20px gutter between the two cards
+    body = _card_body(p, x0, 378, delay)
     text = p["name"] + p["tag"] + p["desc"] + p["stack"] + str(p["stars"] or "")
     return half_slice(CARD_H, side, body, title=p["name"],
                       desc=f'{p["name"]}: {p["desc"]} Built with {p["stack"].replace(" · ", ", ")}.' + (f' {p["stars"]} stars.' if p["stars"] is not None else ""), text=text)
+
+
+def build_full_card(p, delay, stars=None):
+    """Full-width project card (e.g. More on GitHub), spanning both rails."""
+    p = dict(p, stars=stars.get(p["slug"], p["stars"]) if stars else p["stars"])
+    x0, cw = X, (FR - 36) - X
+    body = _card_body(p, x0, cw, delay)
+    text = p["name"] + p["tag"] + p["desc"] + p["stack"] + str(p["stars"] or "")
+    return slice_svg(CARD_H, body, title=p["name"],
+                     desc=f'{p["name"]}: {p["desc"]} Built with {p["stack"].replace(" · ", ", ")}.' + (f' {p["stars"]} stars.' if p["stars"] is not None else ""),
+                     text=text)
 
 
 
@@ -367,7 +410,7 @@ def build_stats(d):
     ry, rh = ty + th + 16, 150
     lw = 300
     kv = [("followers", fmt(d["followers"])), ("forks", fmt(d["forks"])),
-          ("member since", f"{since:%b %Y} ({yrs}y)"), ("repos", fmt(d.get("repo_count")))]
+          ("member since", f"{since:%Y} ({yrs}y)"), ("repos", fmt(d.get("repo_count")))]
     rows = "\n".join(
         f'<text x="{X+16}" y="{ry+38+i*28}" xml:space="preserve"><tspan class="cy">{e(k)}</tspan><tspan class="dim">{"." * (16 - len(k))}</tspan> <tspan class="fg">{e(v)}</tspan></text>'
         for i, (k, v) in enumerate(kv))
@@ -429,7 +472,7 @@ def build_stats(d):
                 if "contributions_year" in d else f"{d['commits_year']} commits in {d['year']}, {d['commits_all']} all time")
     desc = (f"GitHub stats: {d['stars']} total stars; {activity}; "
             f"{d['prs']} pull requests ({d['prs_merged']} merged); current streak {d['streak_current']} days, longest {d['streak_longest']}; "
-            f"{d['followers']} followers; {d['forks']} forks; member since {since:%B %Y}. "
+            f"{d['followers']} followers; {d['forks']} forks; member since {since:%Y}. "
             "Top languages: " + ", ".join(f"{k} {p*100:.1f}%" for k, p in items) + "."
             + ("" if not t3 else " DEV Community: " + ", ".join(f"{fmt(v)} {lab.lower()}" for lab, v in t3) + "."))
     return slice_svg(h, "\n".join(parts), title="Stats", desc=desc, text=html.unescape(text))
@@ -438,11 +481,11 @@ def build_stats(d):
 # ─────────────────────────────── stack ────────────────────────────────
 STACK = [
     ("languages", ["TypeScript", "JavaScript", "Python", "Dart", "PHP", "Java", "PowerShell"]),
-    ("platforms", ["React", "Node.js", "Next.js", "FastAPI", "Flutter", "Electron"]),
-    ("also", ["Android", "Express", "Expo", "DevOps", "Render", "Vercel"]),
-    ("data", ["MongoDB", "MySQL", "Redis", "GraphQL"]),
+    ("platforms", ["React", "Node.js", "Next.js", "FastAPI", "Flutter", "Electron", "Tauri"]),
+    ("also", ["Android", "Express", "Expo", "DevOps", "GitHub Actions", "WSL", "VMs"]),
+    ("data", ["MongoDB", "MySQL", "Redis", "GraphQL", "PostgreSQL"]),
     ("ai", ["Local LLMs", "MCP", "RAG", "Agents", "PyTorch", "OpenCV"]),
-    ("infra", ["AWS", "Linux", "Docker", "Cloudflare", "Netlify", "GitHub Actions"]),
+    ("infra", ["AWS", "Docker", "Cloudflare", "Netlify", "Render", "Vercel"]),
 ]
 
 
@@ -1065,8 +1108,14 @@ def main():
             other = 1 if CITY_MODEL == 2 else 2
             write("contribution-city-alt.svg", models[other]())
     write("projects.svg", build_projects_head())
+    half_i = 0
     for i, p in enumerate(PROJECTS):
-        write(f"card-{p['slug']}.svg", build_card(p, "L" if i % 2 == 0 else "R", 0.3 + i * 0.12, stars))
+        delay = 0.3 + i * 0.12
+        if p.get("full"):
+            write(f"card-{p['slug']}.svg", build_full_card(p, delay, stars))
+        else:
+            write(f"card-{p['slug']}.svg", build_card(p, "L" if half_i % 2 == 0 else "R", delay, stars))
+            half_i += 1
     write("stack.svg", build_stack())
     write("writing.svg", build_writing_head())
     for i, a in enumerate(articles[:5]):
