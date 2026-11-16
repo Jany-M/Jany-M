@@ -145,24 +145,14 @@ def up40(v):
 
 
 # ─────────────────────────────── header ───────────────────────────────
-# Header is split so LinkedIn / Shambix can be real <a><img> links on GitHub
-# (SVG <a> inside a single <img> is not clickable). Left pane + two right slices
-# compose one 880×360 console row in the README table.
-HEADER_H = 360
-LINK_COL_W = 240                          # right column (multiple of 40 for the grid)
-HEADER_LEFT_W = W - LINK_COL_W            # 640
-LINK_SLICE_H = HEADER_H // 2              # 180 each
-
-
 def build_header():
-    """Left pane of the opening console: whoami + name (clickable links are separate SVGs)."""
-    bar_left = "SYS://SHAMBIX // NODE:JANY"
+    bar_left, bar_right = "SYS://SHAMBIX // NODE:JANY", "ONLINE · ALL SYSTEMS NOMINAL"
     name = "JANY MARTELLI"
     name_size = 48
     lines = ["computer scientist · software engineer · tech professor", "building systems since 2009 at ",
              "open source enthusiast"]
-    text = bar_left + name + "$ whoami>>" + "".join(lines) + "SHAMBIX"
-    h, lw = HEADER_H, HEADER_LEFT_W
+    text = bar_left + bar_right + name + "$ whoami>>" + "".join(lines) + "SHAMBIX"
+    h = 360
     css = f"""@keyframes type{{from{{width:0}}}}
 @keyframes flicker{{0%{{opacity:0}}10%{{opacity:1}}14%{{opacity:.2}}22%{{opacity:1}}30%{{opacity:.4}}40%,100%{{opacity:1}}}}
 @keyframes gm{{0%,92%,100%{{transform:translate(0,0)}}93%{{transform:translate(5px,-1px)}}95%{{transform:translate(-3px,1px)}}97%{{transform:translate(2px,0)}}}}
@@ -174,13 +164,17 @@ def build_header():
 <filter id="tglow" x="-5%" y="-40%" width="110%" height="180%"><feGaussianBlur stdDeviation="9"/></filter>
 <filter id="sglow" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="3"/></filter>
 <clipPath id="typeclip"><rect class="typing" x="{X}" y="80" width="140" height="30"/></clipPath>"""
+    dotx = FR - 20 - len(bar_right) * 8.2 - 16
     rows = [f'<text class="fg" x="{X}" y="{{y}}"><tspan class="cy">&gt;&gt;</tspan> {e(lines[0])}</text>',
             f'<text class="fg" x="{X}" y="{{y}}"><tspan class="cy">&gt;&gt;</tspan> {e(lines[1])}<tspan class="cy" font-weight="700">SHAMBIX</tspan></text>',
             f'<text class="fg" x="{X}" y="{{y}}"><tspan class="cy">&gt;&gt;</tspan> {e(lines[2])}</text>']
     desc_lines, _ = stagger(rows, 218, 24, delay0=1.75, step=0.25)
-    body = f'''<rect x="{FL}" y="{M}" width="{lw - FL}" height="34" fill="{CYAN}" fill-opacity=".08"/>
-<line x1="{FL}" y1="{M+34}" x2="{lw}" y2="{M+34}" stroke="{CYAN}" stroke-opacity=".5"/>
+    body = f'''<rect x="{FL}" y="{M}" width="{FR-FL}" height="34" fill="{CYAN}" fill-opacity=".08"/>
+<line x1="{FL}" y1="{M+34}" x2="{FR}" y2="{M+34}" stroke="{CYAN}" stroke-opacity=".5"/>
 <text x="{FL+16}" y="{M+22}" letter-spacing="1" class="cy" style="font-size:12px">{e(bar_left)}</text>
+<text x="{FR-20}" y="{M+22}" letter-spacing="1" class="dim" text-anchor="end" style="font-size:12px">{e(bar_right)}</text>
+<circle class="dot" cx="{dotx}" cy="{M+18}" r="4" fill="{GREEN}"/>
+<circle class="dot" cx="{dotx}" cy="{M+18}" r="4" fill="{GREEN}" filter="url(#sglow)"/>
 <g clip-path="url(#typeclip)"><text x="{X}" y="102" class="dim"><tspan class="gr">$</tspan> whoami</text></g>
 <g class="name" font-weight="800" letter-spacing="2" style="font-size:{name_size}px">
 <text x="{X}" y="168" fill="{CYAN}" opacity=".55" filter="url(#tglow)" style="font-size:{name_size}px">{name}</text>
@@ -194,29 +188,11 @@ def build_header():
 <rect class="cursor" x="{X+18}" y="291" width="10" height="17" fill="{CYAN}"/>
 <rect class="cursor" x="{X+18}" y="291" width="10" height="17" fill="{CYAN}" filter="url(#sglow)"/>
 </g>
-<rect x="{FL}" y="{M+35}" width="{lw - FL}" height="{h - M - 35}" fill="url(#scan)"/>'''
-    # Custom left pane: left rail + top edge only (right column continues the frame)
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{lw}" height="{h}" viewBox="0 0 {lw} {h}" role="img" aria-labelledby="t d">
-<title id="t">Jany Martelli</title>
-<desc id="d">Computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast.</desc>
-<style>
-{faces(text + visible(body), (400, 700, 800))}
-{BASE_CSS}
-{css}
-@media (prefers-reduced-motion:reduce){{*{{animation:none!important}}}}
-</style>
-<defs>
-{DEFS}
-{defs}
-</defs>
-<path d="M{FL} {M}V{h+40}M{FL} {M}H{lw}" fill="none" stroke="{CYAN}" stroke-width="3" opacity=".55" filter="url(#glow)"/>
-<rect x="{FL}" y="{M}" width="{lw - FL}" height="{h - M}" fill="#03040a"/>
-<rect x="{FL}" y="{M}" width="{lw - FL}" height="{h - M}" fill="url(#grid)"/>
-{body}
-<path d="M{FL} {M}V{h}M{FL} {M}H{lw}" fill="none" stroke="{CYAN}" stroke-width="1.2"/>
-<g fill="none" stroke="{CYAN}" stroke-width="2"><path d="M{FL-7} {M+18}V{M-7}H{FL+18}"/></g>
-</svg>
-'''
+<rect x="{FL}" y="{M+35}" width="{FR-FL}" height="{h-M-35}" fill="url(#scan)"/>'''
+    return slice_svg(h, body, title="Jany Martelli",
+                     desc="Computer scientist, software engineer and tech professor. "
+                          "Building systems since 2009 at Shambix. Open source enthusiast.",
+                     text=text, top=True, css=css, defs=defs, weights=(400, 700, 800))
 
 
 # ─────────────────────────────── footer ───────────────────────────────
@@ -560,11 +536,14 @@ def build_writing_more():
 
 
 # ──────────────────────────────── links ───────────────────────────────
+# Same pattern as project cards: separate SVGs wrapped in <a href> in the README.
 LINKS = [
     ("linkedin", "LinkedIn", "in/janymartelli", "https://www.linkedin.com/in/janymartelli"),
     ("shambix", "Shambix", "shambix.com", "https://www.shambix.com"),
 ]
 ICONS = json.load(open(HERE / "icons.json", encoding="utf-8"))
+SEG = W // 5     # 176 px per button slice
+BTN_W, BTN_GAP = 124, 39  # buttons line up with the text column (x = 52 … 828)
 
 
 def icon_markup(key, x, y, size=18):
@@ -579,44 +558,28 @@ def icon_markup(key, x, y, size=18):
 
 
 def build_link_button(k):
-    """Right-column header slice (top = LinkedIn, bottom = Shambix). Wrapped in <a> in the README."""
     key, label, handle, url = LINKS[k]
-    top = k == 0
-    h, w = LINK_SLICE_H, LINK_COL_W
-    rx = w - M                       # right rail x inside this slice
-    # card box inset from the rails / seam
-    bw, bh, cut = 168, 56, 12
-    lx = (w - M - bw) // 2           # horizontally centred in the column
-    by = 70 if top else 50           # room for the status bar on the top slice
-    box = f"M{lx} {by}H{lx+bw-cut}L{lx+bw} {by+cut}V{by+bh}H{lx}Z"
-    bar_right = "ONLINE"   # short: this slice is only 240px wide
-    text = label + handle + "inS" + (bar_right if top else "")
-    card = f'''<g class="ln" style="animation-delay:{.25 + k*.08:.2f}s">
+    h = 80
+    x0 = SEG * k                       # this slice's position inside the full-width row
+    lx = X + k * (BTN_W + BTN_GAP) - x0
+    first, last = k == 0, False
+    bg0 = FL - x0 if first else 0
+    bg1 = FR - x0 if last else SEG
+    rails = (f"M{FL - x0} 0V{h}" if first else "") + (f"M{FR - x0} 0V{h}" if last else "")
+    glow = (f"M{FL - x0} -40V{h+40}" if first else "") + (f"M{FR - x0} -40V{h+40}" if last else "")
+    by, bh, cut = 12, 56, 12
+    box = f"M{lx} {by}H{lx+BTN_W-cut}L{lx+BTN_W} {by+cut}V{by+bh}H{lx}Z"
+    text = label + handle + "inS"
+    body = f'''<g class="ln" style="animation-delay:{.25 + k*.08:.2f}s">
 <path d="{box}" fill="{CYAN}" fill-opacity=".05"/>
 <path d="{box}" fill="none" stroke="{CYAN}" stroke-opacity=".55"/>
-<path d="M{lx+bw-cut} {by}L{lx+bw} {by+cut}" stroke="{CYAN}" stroke-width="2"/>
+<path d="M{lx+BTN_W-cut} {by}L{lx+BTN_W} {by+cut}" stroke="{CYAN}" stroke-width="2"/>
 <g filter="url(#g)" opacity=".5">{icon_markup(key, lx+12, by+11)}</g>
 {icon_markup(key, lx+12, by+11)}
 <text x="{lx+38}" y="{by+25}" font-weight="700" class="cy" style="font-size:13px">{e(label)}</text>
 <text x="{lx+12}" y="{by+46}" class="dim" style="font-size:10px">{e(handle)}</text>
 </g>'''
-    if top:
-        dotx = rx - 20 - len(bar_right) * 8.2 - 16
-        status = f'''<rect x="0" y="{M}" width="{rx}" height="34" fill="{CYAN}" fill-opacity=".08"/>
-<line x1="0" y1="{M+34}" x2="{rx}" y2="{M+34}" stroke="{CYAN}" stroke-opacity=".5"/>
-<text x="{rx-20}" y="{M+22}" letter-spacing="1" class="dim" text-anchor="end" style="font-size:12px">{e(bar_right)}</text>
-<circle class="dot" cx="{dotx}" cy="{M+18}" r="4" fill="{GREEN}"/>
-<circle class="dot" cx="{dotx}" cy="{M+18}" r="4" fill="{GREEN}" filter="url(#g)"/>'''
-        y0, glow_extra, corners = M, f"M{rx} {M}V{h+40}M{0} {M}H{rx}", f'<path d="M{rx-18} {M-7}H{rx+7}V{M+18}"/>'
-        rails = f"M{rx} {M}V{h}M{0} {M}H{rx}"
-        bg = f'<rect x="0" y="{M}" width="{rx}" height="{h - M}" fill="#03040a"/>\n<rect x="0" y="{M}" width="{rx}" height="{h - M}" fill="url(#grid)"/>'
-    else:
-        status = ""
-        y0, glow_extra, corners = 0, f"M{rx} -40V{h+40}", ""
-        rails = f"M{rx} 0V{h}"
-        bg = f'<rect x="0" y="0" width="{rx}" height="{h}" fill="#03040a"/>\n<rect x="0" y="0" width="{rx}" height="{h}" fill="url(#grid)"/>'
-    body = status + "\n" + card
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-labelledby="t d">
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{SEG}" height="{h}" viewBox="0 0 {SEG} {h}" role="img" aria-labelledby="t d">
 <title id="t">{e(label)}</title>
 <desc id="d">{e(label)}: {e(url)}</desc>
 <style>
@@ -625,15 +588,32 @@ def build_link_button(k):
 @media (prefers-reduced-motion:reduce){{*{{animation:none!important}}}}
 </style>
 <defs>
-<pattern id="grid" x="{(-HEADER_LEFT_W) % 40}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".06"/></pattern>
+<pattern id="grid" x="{(-x0) % 40}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".06"/></pattern>
 <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
 <filter id="g" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="4"/></filter>
 </defs>
-<path d="{glow_extra}" fill="none" stroke="{CYAN}" stroke-width="3" opacity=".55" filter="url(#glow)"/>
-{bg}
+{f'<path d="{glow}" fill="none" stroke="{CYAN}" stroke-width="3" opacity=".55" filter="url(#glow)"/>' if glow else ""}
+<rect x="{bg0}" y="0" width="{bg1-bg0}" height="{h}" fill="#03040a"/>
+<rect x="{bg0}" y="0" width="{bg1-bg0}" height="{h}" fill="url(#grid)"/>
 {body}
-<path d="{rails}" fill="none" stroke="{CYAN}" stroke-width="1.2"/>
-<g fill="none" stroke="{CYAN}" stroke-width="2">{corners}</g>
+{f'<path d="{rails}" fill="none" stroke="{CYAN}" stroke-width="1.2"/>' if rails else ""}
+</svg>
+'''
+
+
+def build_link_filler(first_slot):
+    h, x0 = 80, SEG * first_slot
+    w = W - x0
+    rx = FR - x0
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" aria-hidden="true">
+<defs>
+<pattern id="grid" x="{(-x0) % 40}" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="{CYAN}" stroke-opacity=".06"/></pattern>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+</defs>
+<path d="M{rx} -40V{h+40}" fill="none" stroke="{CYAN}" stroke-width="3" opacity=".55" filter="url(#glow)"/>
+<rect x="0" y="0" width="{rx}" height="{h}" fill="#03040a"/>
+<rect x="0" y="0" width="{rx}" height="{h}" fill="url(#grid)"/>
+<path d="M{rx} 0V{h}" fill="none" stroke="{CYAN}" stroke-width="1.2"/>
 </svg>
 '''
 
@@ -1089,6 +1069,7 @@ def main():
     write("header.svg", build_header())
     for k, (key, *_) in enumerate(LINKS):
         write(f"links/{key}.svg", build_link_button(k))
+    write("links/fill.svg", build_link_filler(len(LINKS)))
     write("stats.svg", build_stats(stats))
     if (args.data / "calendar.json").exists():
         cal = json.load(open(args.data / "calendar.json", encoding="utf-8"))

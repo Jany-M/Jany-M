@@ -1,13 +1,6 @@
 <p align="center">
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-<tr>
-<td width="73%" valign="top" rowspan="2"><img src="./assets/header.svg?v=72914736" width="100%" align="top" alt="Jany Martelli — computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast."></td>
-<td width="27%" valign="top"><a href="https://www.linkedin.com/in/janymartelli"><img src="./assets/links/linkedin.svg?v=c58e239b" width="100%" align="top" alt="LinkedIn"></a></td>
-</tr>
-<tr>
-<td width="27%" valign="top"><a href="https://www.shambix.com"><img src="./assets/links/shambix.svg?v=2e001641" width="100%" align="top" alt="Shambix"></a></td>
-</tr>
-</table>
+<img src="./assets/header.svg?v=82aa8aed" width="100%" align="top" alt="Jany Martelli — computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast.">
+<a href="https://www.linkedin.com/in/janymartelli"><img src="./assets/links/linkedin.svg?v=51e389c7" width="20%" align="top" alt="LinkedIn"></a><a href="https://www.shambix.com"><img src="./assets/links/shambix.svg?v=6a07e673" width="20%" align="top" alt="Shambix"></a><img src="./assets/links/fill.svg?v=18b9968e" width="60%" align="top" alt="">
 <img src="./assets/stats.svg?v=20287cea" width="100%" align="top" alt="Stats: 56 total stars; 6138 contributions in 2026, 9111 all time; 151 pull requests (128 merged); current streak 1 day, longest 24 days; 26 followers; 9 forks; member since 2013. Top languages: JavaScript, TypeScript, PHP, Python, Dart.">
 <img src="./assets/contribution-city.svg?v=0fc6bd72" width="100%" align="top" alt="Contribution city: an isometric night skyline with one building per day of the last year. 6,443 contributions, busiest day July 11 with 177.">
 <img src="./assets/projects.svg?v=eb93b73a" width="100%" align="top" alt="Projects">

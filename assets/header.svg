@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="t d">
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" role="img" aria-labelledby="t d">
 <title id="t">Jany Martelli</title>
 <desc id="d">Computer scientist, software engineer and tech professor. Building systems since 2009 at Shambix. Open source enthusiast.</desc>
 <style>
@@ -29,12 +29,15 @@ text{font-family:'JBM',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font
 <filter id="sglow" x="-20%" y="-60%" width="140%" height="220%"><feGaussianBlur stdDeviation="3"/></filter>
 <clipPath id="typeclip"><rect class="typing" x="52" y="80" width="140" height="30"/></clipPath>
 </defs>
-<path d="M16 16V400M16 16H640" fill="none" stroke="#ff4d6d" stroke-width="3" opacity=".55" filter="url(#glow)"/>
-<rect x="16" y="16" width="624" height="344" fill="#03040a"/>
-<rect x="16" y="16" width="624" height="344" fill="url(#grid)"/>
-<rect x="16" y="16" width="624" height="34" fill="#ff4d6d" fill-opacity=".08"/>
-<line x1="16" y1="50" x2="640" y2="50" stroke="#ff4d6d" stroke-opacity=".5"/>
+<path d="M16 16V400M864 16V400M16 16H864" fill="none" stroke="#ff4d6d" stroke-width="3" opacity=".55" filter="url(#glow)"/>
+<rect x="16" y="16" width="848" height="344" fill="#03040a"/>
+<rect x="16" y="16" width="848" height="344" fill="url(#grid)"/>
+<rect x="16" y="16" width="848" height="34" fill="#ff4d6d" fill-opacity=".08"/>
+<line x1="16" y1="50" x2="864" y2="50" stroke="#ff4d6d" stroke-opacity=".5"/>
 <text x="32" y="38" letter-spacing="1" class="cy" style="font-size:12px">SYS://SHAMBIX // NODE:JANY</text>
+<text x="844" y="38" letter-spacing="1" class="dim" text-anchor="end" style="font-size:12px">ONLINE · ALL SYSTEMS NOMINAL</text>
+<circle class="dot" cx="598.4000000000001" cy="34" r="4" fill="#3fb950"/>
+<circle class="dot" cx="598.4000000000001" cy="34" r="4" fill="#3fb950" filter="url(#sglow)"/>
 <g clip-path="url(#typeclip)"><text x="52" y="102" class="dim"><tspan class="gr">$</tspan> whoami</text></g>
 <g class="name" font-weight="800" letter-spacing="2" style="font-size:48px">
 <text x="52" y="168" fill="#ff4d6d" opacity=".55" filter="url(#tglow)" style="font-size:48px">JANY MARTELLI</text>
@@ -50,7 +53,7 @@ text{font-family:'JBM',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font
 <rect class="cursor" x="70" y="291" width="10" height="17" fill="#ff4d6d"/>
 <rect class="cursor" x="70" y="291" width="10" height="17" fill="#ff4d6d" filter="url(#sglow)"/>
 </g>
-<rect x="16" y="51" width="624" height="309" fill="url(#scan)"/>
-<path d="M16 16V360M16 16H640" fill="none" stroke="#ff4d6d" stroke-width="1.2"/>
-<g fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M9 34V9H34"/></g>
+<rect x="16" y="51" width="848" height="309" fill="url(#scan)"/>
+<path d="M16 16V360M864 16V360M16 16H864" fill="none" stroke="#ff4d6d" stroke-width="1.2"/>
+<g fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M9 34V9H34"/><path d="M846 9H871V34"/></g>
 </svg>
