@@ -1,5 +1,11 @@
 [
   {
+    "published_at": "2026-11-16T22:03:50",
+    "title": "Parla: Free Meeting Notes for Windows, with Local AI Transcription and Live Translation",
+    "url": "https://www.shambix.com/parla-local-ai-meeting-notes-windows/",
+    "category": "AI - Artificial Intelligence"
+  },
+  {
     "published_at": "2026-10-22T17:33:39",
     "title": "Critical PHP Vulnerabilities (CVE-2026-109618 and CVE-2026-109619): What to Do Right Now",
     "url": "https://www.shambix.com/php-critical-vulnerabilities-cve-2026-109618-cve-2026-109619/",
@@ -22,11 +28,5 @@
     "title": "How Much Does Custom App Development Cost? What Drives the Price",
     "url": "https://www.shambix.com/custom-app-development-cost/",
     "category": "Custom Development"
-  },
-  {
-    "published_at": "2026-09-30T21:10:22",
-    "title": "Shambix Growth Console: an AI SEO Plugin for WordPress That Tells You What to Do Next",
-    "url": "https://www.shambix.com/shambix-growth-console-wordpress-seo-plugin/",
-    "category": "WordPress & WooCommerce"
   }
 ]
