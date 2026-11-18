@@ -2,7 +2,7 @@
   {
     "name": null,
     "private": true,
-    "count": 3450
+    "count": 3448
   },
   {
     "name": null,
@@ -17,7 +17,7 @@
   {
     "name": "Jany-M/agent-spaghetti",
     "private": false,
-    "count": 103
+    "count": 131
   },
   {
     "name": null,
@@ -80,6 +80,11 @@
     "count": 21
   },
   {
+    "name": "Jany-M/parla",
+    "private": false,
+    "count": 21
+  },
+  {
     "name": "Jany-M/Jany-M",
     "private": false,
     "count": 17
@@ -87,11 +92,6 @@
   {
     "name": null,
     "private": true,
-    "count": 13
-  },
-  {
-    "name": "Jany-M/parla",
-    "private": false,
     "count": 13
   },
   {
@@ -107,7 +107,7 @@
   {
     "name": null,
     "private": true,
-    "count": 5
+    "count": 4
   },
   {
     "name": "Jany-M/github-failed-actions-mcp-companion",
