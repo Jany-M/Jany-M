@@ -30,17 +30,17 @@
   },
   "languages": {
     "JavaScript": 16589,
-    "TypeScript": 12274,
+    "TypeScript": 12276,
     "PHP": 11178,
-    "Python": 8544,
+    "Python": 8549,
     "Dart": 4447,
     "Jupyter Notebook": 3920,
-    "PowerShell": 1324,
+    "PowerShell": 1336,
     "Java": 1250,
     "Objective-C": 927,
+    "Rust": 548,
     "Blade": 547,
     "C++": 542,
-    "Rust": 531,
     "C": 410,
     "CMake": 364,
     "EJS": 328,
@@ -57,10 +57,10 @@
     "Mako": 25
   },
   "year": 2026,
-  "contributions_year": 6205,
-  "contributions_all": 9178,
-  "commits_all": 8861,
-  "streak_current": 3,
+  "contributions_year": 6221,
+  "contributions_all": 9194,
+  "commits_all": 8877,
+  "streak_current": 4,
   "streak_longest": 24,
-  "updated": "2026-11-18"
+  "updated": "2026-11-19"
 }
