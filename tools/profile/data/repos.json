@@ -62,7 +62,7 @@
   {
     "name": "Jany-M/parla",
     "private": false,
-    "count": 32
+    "count": 34
   },
   {
     "name": "Patcherly-Official/patcherly-connector-packages",
@@ -105,14 +105,14 @@
     "count": 7
   },
   {
-    "name": null,
-    "private": true,
-    "count": 3
-  },
-  {
     "name": "Jany-M/github-failed-actions-mcp-companion",
     "private": false,
     "count": 3
+  },
+  {
+    "name": null,
+    "private": true,
+    "count": 2
   },
   {
     "name": "OneByteToRuleThemAll/canvas-api-download-material",
