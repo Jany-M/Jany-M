@@ -40,6 +40,11 @@
     "count": 52
   },
   {
+    "name": "Jany-M/parla",
+    "private": false,
+    "count": 46
+  },
+  {
     "name": null,
     "private": true,
     "count": 46
@@ -53,11 +58,6 @@
     "name": "Jany-M/discord-github-bot",
     "private": false,
     "count": 40
-  },
-  {
-    "name": "Jany-M/parla",
-    "private": false,
-    "count": 36
   },
   {
     "name": null,
@@ -101,6 +101,11 @@
   },
   {
     "name": "Jany-M/ReWin",
+    "private": false,
+    "count": 7
+  },
+  {
+    "name": "Jany-M/firenze-story",
     "private": false,
     "count": 7
   },
