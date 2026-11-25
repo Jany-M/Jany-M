@@ -1,8 +1,8 @@
 {
   "created_at": "2013-05-07T14:11:45Z",
   "followers": 28,
-  "prs": 151,
-  "prs_merged": 128,
+  "prs": 153,
+  "prs_merged": 130,
   "stars": 58,
   "forks": 9,
   "repo_count": 61,
@@ -31,9 +31,9 @@
   },
   "languages": {
     "JavaScript": 16589,
-    "TypeScript": 12820,
+    "TypeScript": 12824,
     "PHP": 11178,
-    "Python": 9118,
+    "Python": 9177,
     "Dart": 4447,
     "Jupyter Notebook": 3920,
     "PowerShell": 1336,
@@ -58,10 +58,10 @@
     "Mako": 25
   },
   "year": 2026,
-  "contributions_year": 6253,
-  "contributions_all": 9226,
-  "commits_all": 8908,
-  "streak_current": 4,
+  "contributions_year": 6328,
+  "contributions_all": 9301,
+  "commits_all": 8981,
+  "streak_current": 5,
   "streak_longest": 24,
-  "updated": "2026-11-24"
+  "updated": "2026-11-25"
 }

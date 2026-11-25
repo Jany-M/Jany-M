@@ -2,17 +2,17 @@
   {
     "name": null,
     "private": true,
-    "count": 3448
+    "count": 3479
   },
   {
     "name": null,
     "private": true,
-    "count": 2103
+    "count": 2133
   },
   {
     "name": null,
     "private": true,
-    "count": 214
+    "count": 219
   },
   {
     "name": "Jany-M/agent-spaghetti",
@@ -22,12 +22,12 @@
   {
     "name": null,
     "private": true,
-    "count": 62
+    "count": 68
   },
   {
     "name": null,
     "private": true,
-    "count": 60
+    "count": 62
   },
   {
     "name": null,
@@ -57,7 +57,7 @@
   {
     "name": "Jany-M/discord-github-bot",
     "private": false,
-    "count": 40
+    "count": 41
   },
   {
     "name": null,
@@ -125,12 +125,12 @@
     "count": 2
   },
   {
-    "name": "Patcherly-Official/patcherly-mcp-plugins",
+    "name": "Patcherly-Official/php-connector",
     "private": false,
     "count": 1
   },
   {
-    "name": "Patcherly-Official/php-connector",
+    "name": "Patcherly-Official/patcherly-mcp-plugins",
     "private": false,
     "count": 1
   },
