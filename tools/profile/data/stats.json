@@ -30,10 +30,10 @@
     "firenze-story": 0
   },
   "languages": {
-    "JavaScript": 16589,
-    "TypeScript": 12824,
-    "PHP": 11178,
-    "Python": 9177,
+    "JavaScript": 16592,
+    "TypeScript": 12846,
+    "PHP": 11188,
+    "Python": 9223,
     "Dart": 4447,
     "Jupyter Notebook": 3920,
     "PowerShell": 1336,
@@ -58,10 +58,10 @@
     "Mako": 25
   },
   "year": 2026,
-  "contributions_year": 6328,
-  "contributions_all": 9301,
-  "commits_all": 8981,
-  "streak_current": 5,
+  "contributions_year": 6351,
+  "contributions_all": 9324,
+  "commits_all": 9004,
+  "streak_current": 6,
   "streak_longest": 24,
-  "updated": "2026-11-25"
+  "updated": "2026-11-26"
 }
