@@ -22,7 +22,7 @@
   {
     "name": null,
     "private": true,
-    "count": 62
+    "count": 61
   },
   {
     "name": null,
@@ -38,6 +38,11 @@
     "name": "Jany-M/repo-visualizer",
     "private": false,
     "count": 52
+  },
+  {
+    "name": "Jany-M/firenze-story",
+    "private": false,
+    "count": 51
   },
   {
     "name": "Jany-M/parla",
@@ -88,11 +93,6 @@
     "name": "Jany-M/Jany-M",
     "private": false,
     "count": 17
-  },
-  {
-    "name": "Jany-M/firenze-story",
-    "private": false,
-    "count": 14
   },
   {
     "name": null,

@@ -31,9 +31,9 @@
   },
   "languages": {
     "JavaScript": 16592,
-    "TypeScript": 12846,
+    "TypeScript": 12920,
     "PHP": 11188,
-    "Python": 9223,
+    "Python": 9544,
     "Dart": 4447,
     "Jupyter Notebook": 3920,
     "PowerShell": 1336,
@@ -58,10 +58,10 @@
     "Mako": 25
   },
   "year": 2026,
-  "contributions_year": 6351,
-  "contributions_all": 9324,
-  "commits_all": 9004,
-  "streak_current": 6,
+  "contributions_year": 6388,
+  "contributions_all": 9361,
+  "commits_all": 9041,
+  "streak_current": 7,
   "streak_longest": 24,
-  "updated": "2026-11-26"
+  "updated": "2026-11-27"
 }
